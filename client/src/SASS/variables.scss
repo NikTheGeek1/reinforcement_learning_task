@@ -1,0 +1,21 @@
+
+// ANIMATIONS
+@keyframes moveUp {
+    from {top: 40px}
+    to {top: 0px}
+}
+
+@keyframes moveDown {
+    from {top: -40px}
+    to {top: 0px}
+}
+
+@keyframes moveLeft {
+    from {left: 40px}
+    to {left: 0px}
+}
+
+@keyframes moveRight {
+    from {left: -40px}
+    to {left: 0px}
+}

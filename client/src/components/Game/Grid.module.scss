@@ -1,0 +1,15 @@
+@import '../../SASS/variables';
+
+.Visited {
+    background-color: #9d03ff;
+    transition:  background-color 1s;
+}
+
+
+.Finishing {
+    background-color: green;
+}
+
+.Trap {
+    background-color: red;
+}
