@@ -5,7 +5,14 @@ const app = express();
 const indexRoutes = require('./routes/index');
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    const allowedOrigins = [
+        'http://localhost:3000',
+        'http://learning-task.herokuapp.com/'
+    ]
+    const origin = req.header.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     res.setHeader('Access-Control-Allow-Methods',
         'GET, POST, PUT, PATCH, DELETE'
     );
@@ -22,7 +29,7 @@ app.use((error, req, res, next) => {
     res.status(status).json({ message: message, data: data });
 });
 
-const server = app.listen(8080, () => {
+const server = app.listen(process.env.PORT || 8080, () => {
     console.log('Server\'s up!', 'server.js', 'line: ', '25'); 
 });
 
