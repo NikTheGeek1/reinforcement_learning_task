@@ -1,12 +1,10 @@
 export default class Condition {
     constructor(
         finishingCoordinates,
-        numberOfTraps,
         trapsCoordinates
     ) {
-        if (trapsCoordinates.length !== numberOfTraps) throw new Error('Number of traps !== number of coordinates');
         this.finishingCoordinates = { ...finishingCoordinates, revealed: false };
-        this.numberOfTraps = numberOfTraps;
+        this.numberOfTraps = trapsCoordinates.length;
         this.trapsSpecs = trapsCoordinates.map(coord => {
             return { ...coord, revealed: false }
         });
