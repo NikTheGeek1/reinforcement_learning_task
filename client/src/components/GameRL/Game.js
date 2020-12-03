@@ -5,7 +5,7 @@ import ClassesMovements from './Movements.module.scss';
 import ClassesScore from './ScoreBoard.module.scss';
 
 import ClassesGrid from './Grid.module.scss';
-import Robot from '../../models/robot';
+import Robot from '../../models/robotRL';
 import Robocop from '../../static/images/human.png';
 import { gridStyle, rowStyle, squareStyle, rows, columns } from '../../models/setUpGrid';
 import { condition } from '../../models/setUpConditions';
@@ -18,43 +18,26 @@ const Game = props => {
     const [moveSpecs, setMoveSpecs] = useState({
         x: robot.x,
         y: robot.y,
-        currentMove: robot.currentMove,
-        facingDirection: ''
+        moves: robot.getAbsoluteLegalMoves(),
+        probs: robot.getProbsOfAvailableMoves()
     });
-    const makeMovement = useCallback(e => {
-        if (e.keyCode === 37) {// left
-            robot.moveLeft()
-            setMoveSpecs({
-                x: robot.x,
-                y: robot.y,
-                currentMove: robot.currentMove,
-                facingDirection: 'RobocopRev'
-            });
-        } else if (e.keyCode === 38) {// up
-            robot.moveUp()
-            setMoveSpecs({ ...moveSpecs, x: robot.x, y: robot.y, currentMove: robot.currentMove });
-        } else if (e.keyCode === 39) {// right
-            robot.moveRight()
-            setMoveSpecs({
-                x: robot.x,
-                y: robot.y,
-                currentMove: robot.currentMove,
-                facingDirection: ''
-            });
-        } else if (e.keyCode === 40) {// down
-            robot.moveDown()
-            setMoveSpecs({ ...moveSpecs, x: robot.x, y: robot.y, currentMove: robot.currentMove });
-        }
-    }, [setMoveSpecs, moveSpecs]);
 
     useEffect(() => {
-        document.addEventListener('keydown', makeMovement);
-        return () => {
-            document.removeEventListener('keydown', makeMovement);
-        }
-    });
-
-    console.log(robot.history, 'Game.js', 'line: ', '57');
+        const timer = setTimeout(() => {
+            const moveObj = robot.move();
+            const moves = robot.getAbsoluteLegalMoves();
+            const probs = robot.getProbsOfAvailableMoves();
+            setMoveSpecs({
+                ...moveSpecs, 
+                x: moveObj.x, 
+                y: moveObj.y,
+                moves: moves,
+                probs: probs
+            });
+            
+        }, 1000);
+        return () => clearTimeout(timer)
+    }, [moveSpecs])
 
     useEffect(() => {
         if (condition.isTrap(moveSpecs.x, moveSpecs.y)) {
@@ -83,6 +66,7 @@ const Game = props => {
                                 condition.isTrap(square, row) && condition.isTrapRevealed(condition.isTrap(square, row)) && ClassesGrid.Trap
                             ].join(" ")}
                             style={squareStyle}>
+                                {/* printing the robot */}
                             {row === moveSpecs.y && square === moveSpecs.x &&
                                 <img
                                     className={[
@@ -92,6 +76,16 @@ const Game = props => {
                                     ].join(" ")}
                                     src={Robocop} alt="Robocop"
                                 />}
+                                {/* printing probs */}
+                                <span className={ClassesGrid.Probs}>{
+                                    robot.isVisitedInRound(
+                                        square, 
+                                        row,
+                                        moveSpecs.moves) && moveSpecs.probs[robot.whichVisitedInRound(
+                                            square, 
+                                            row,
+                                            moveSpecs.moves)]
+                                }</span>
                         </div>
                     );
                 })}
@@ -118,7 +112,7 @@ const Game = props => {
         plusScore = <span className={ClassesScore.PlusScore}> +50</span>;
         cleanScore('plus');
     }
-    
+
     if (showScore.minus) {
         minusScore = <span className={ClassesScore.MinusScore}> -10</span>;
         cleanScore('minus')

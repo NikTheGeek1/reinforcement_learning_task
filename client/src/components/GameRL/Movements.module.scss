@@ -1,0 +1,12 @@
+@import '../../SASS/variables';
+
+.right,
+.left,
+.up,
+.down {
+    transition: all .2s;
+}
+.right {animation: moveRight .2s;}
+.up {animation: moveUp .2s;}
+.down {animation: moveDown .2s;}
+.left {animation: moveLeft .2s;}

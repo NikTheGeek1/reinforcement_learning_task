@@ -1,0 +1,38 @@
+@import '../../SASS/variables.scss';
+
+.Container {
+ border: 1px solid black;
+}
+
+.Container > h3{
+    margin: 0;
+}
+
+.StepsDiv {
+
+}
+
+.SubText {
+    margin: 0;
+    font-size: 18px;
+}
+
+.ScoreDiv {
+
+}
+
+.StepsDiv {
+
+}
+
+.PlusScore {
+    position: relative;
+    animation: fadeUp .2s .5s forwards;
+    color: green;
+}
+
+.MinusScore {
+    position: relative;
+    animation: fadeUp .2s .5s forwards;
+    color: red;
+}

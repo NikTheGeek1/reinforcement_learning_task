@@ -19,3 +19,14 @@
     from {left: -40px}
     to {left: 0px}
 }
+
+@keyframes fadeUp {
+    from {
+        top: 0;
+        opacity: 1;
+    }
+    to {
+        top: -10px;
+        opacity: 0;
+    }
+}

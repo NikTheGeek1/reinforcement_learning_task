@@ -1,24 +1,28 @@
 import Grid from './grid';
 export default class Robot extends Grid {
 
-    constructor(grid_rows, grid_columns) {
+    constructor(score, steps, grid_rows, grid_columns) {
         super(grid_rows, grid_columns);
         this.x = 0;
         this.y = 0;
         this.currentRound = 0;
         this.currentMove = '';
         this.legalMoves = ['right', 'down'];
+        this.score = score;
+        this.steps = steps;
         this.history = [
             [{}]
         ];
     };
 
     fellInTrap() {
+        this.decreaseScore(10);
         this.increaseRound();
         this.goToStart();
     }
 
     finish() {
+        this.increaseScore(50);
         this.increaseRound();
         this.goToStart();
     }
@@ -28,6 +32,7 @@ export default class Robot extends Grid {
         this.y = 0;
         this.setLegalMoves();
     }
+
     increaseRound() {
         this.currentRound += 1;
         this.history.push([]);
@@ -64,8 +69,13 @@ export default class Robot extends Grid {
     isLegal(move) {
         return this.legalMoves.indexOf(move) !== -1;
     }
+    checkStepsMoreThanZero() {
+        return this.steps > 0;
+    }
 
     pushToHistory(move) {
+        this.decreaseSteps()
+        this.decreaseScore(1)
         console.log(this.currentRound, 'robot.js', 'line: ', '65');
         this.history[this.currentRound].push({
             x: this.x,
@@ -74,7 +84,11 @@ export default class Robot extends Grid {
         });
     }
 
+
     moveLeft() {
+        if (!this.checkStepsMoreThanZero()) {
+            return this.gameOver()
+        }
         if (this.isLegal('left')) {
             this.x -= 1;
             this.currentMove = 'left'
@@ -84,6 +98,9 @@ export default class Robot extends Grid {
     }
 
     moveRight() {
+        if (!this.checkStepsMoreThanZero()) {
+            return this.gameOver()
+        }
         if (this.isLegal('right')) {
             this.x += 1;
             this.currentMove = 'right'
@@ -93,6 +110,9 @@ export default class Robot extends Grid {
     }
 
     moveUp() {
+        if (!this.checkStepsMoreThanZero()) {
+            return this.gameOver()
+        }
         if (this.isLegal('up')) {
             this.y -= 1;
             this.currentMove = 'up'
@@ -102,11 +122,25 @@ export default class Robot extends Grid {
     }
 
     moveDown() {
+        if (!this.checkStepsMoreThanZero()) {
+            return this.gameOver()
+        }
         if (this.isLegal('down')) {
             this.y += 1;
             this.currentMove = 'down'
             this.pushToHistory(this.currentMove);
             this.setLegalMoves()
         }
+    }
+
+    decreaseScore(amount) {
+        this.score -= amount;
+    }
+    increaseScore(amount) {
+        this.score += amount;
+    }
+
+    decreaseSteps() {
+        this.steps -= 1;
     }
 }
