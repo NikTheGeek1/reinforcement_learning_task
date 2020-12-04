@@ -10,16 +10,16 @@ export default class Condition {
         });
     }
 
-    isTrap(x, y) {
+    isTrap(state) {
         for (const trap of this.trapsSpecs) {
-            if (x === trap.x && y === trap.y) {
+            if (state.x === trap.x && state.y === trap.y) {
                 return trap;
             }
         }
     }
-    isFinish(x, y) {
-        if (this.finishingCoordinates.x === x &&
-            this.finishingCoordinates.y === y) return true;
+    isFinish(state) {
+        if (this.finishingCoordinates.x === state.x &&
+            this.finishingCoordinates.y === state.y) return true;
     }
     isFinishReveald() {
         return this.finishingCoordinates.revealed;
@@ -29,15 +29,15 @@ export default class Condition {
         return trap.revealed;
     }
 
-    revealTrap(x, y) {
+    revealTrap(state) {
         this.trapsSpecs.forEach(trap => {
-            if (trap.x === x && trap.y === y) trap.revealed = true;
+            if (trap.x === state.x && trap.y === state.y) trap.revealed = true;
         })
     }
 
-    revealFinish(x, y) {
-        if (this.finishingCoordinates.x === x &&
-            this.finishingCoordinates.y === y) this.finishingCoordinates.revealed = true;
+    revealFinish(state) {
+        if (this.finishingCoordinates.x === state.x &&
+            this.finishingCoordinates.y === state.y) this.finishingCoordinates.revealed = true;
     }
 
 

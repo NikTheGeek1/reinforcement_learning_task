@@ -8,31 +8,25 @@ import ClassesGrid from './Grid.module.scss';
 import Robot from '../../models/robotRL';
 import Robocop from '../../static/images/human.png';
 import { gridStyle, rowStyle, squareStyle, rows, columns } from '../../models/setUpGrid';
-import { condition } from '../../models/setUpConditions';
+import { finishingCoordinates, trapsCoordinates } from '../../models/setUpConditions';
 
-
-const robot = new Robot(100, 100, rows.length, columns.length)
+const robot = new Robot(100, 100, rows.length, columns.length, finishingCoordinates, trapsCoordinates)
 
 const Game = props => {
     const [showScore, setShowScore] = useState({ plus: false, minus: false })
     const [moveSpecs, setMoveSpecs] = useState({
-        x: robot.x,
-        y: robot.y,
-        moves: robot.getAbsoluteLegalMoves(),
-        probs: robot.getProbsOfAvailableMoves()
+        state: robot.state,
+        moves: robot.getAbsoluteMovesWithRewards(),
     });
 
     useEffect(() => {
         const timer = setTimeout(() => {
+            
             const moveObj = robot.move();
-            const moves = robot.getAbsoluteLegalMoves();
-            const probs = robot.getProbsOfAvailableMoves();
+
             setMoveSpecs({
-                ...moveSpecs, 
-                x: moveObj.x, 
-                y: moveObj.y,
-                moves: moves,
-                probs: probs
+                ...moveSpecs,
+                state: moveObj
             });
             
         }, 1000);
@@ -40,52 +34,59 @@ const Game = props => {
     }, [moveSpecs])
 
     useEffect(() => {
-        if (condition.isTrap(moveSpecs.x, moveSpecs.y)) {
+        if (robot.isTrap(moveSpecs.state)) {
             robot.fellInTrap();
-            condition.revealTrap(moveSpecs.x, moveSpecs.y);
-            setMoveSpecs({ ...moveSpecs, x: 0, y: 0 });
+            robot.revealTrap(moveSpecs.state);
+            setMoveSpecs({ ...moveSpecs, state: { x: 0, y: 0 } });
         }
-        if (condition.isFinish(moveSpecs.x, moveSpecs.y)) {
+        if (robot.isFinish(moveSpecs.state)) {
             robot.finish();
-            condition.revealFinish(moveSpecs.x, moveSpecs.y);
-            setMoveSpecs({ ...moveSpecs, x: 0, y: 0 });
+            robot.revealFinish(moveSpecs.state);
+            setMoveSpecs({ ...moveSpecs, state: { x: 0, y: 0 } });
         }
     }, [moveSpecs])
 
 
-    const grid = rows.map(row => {
+    const grid = rows.map(y => {
         return (
-            <div key={row} className={Classes.GameRow} style={rowStyle}>
-                {columns.map(square => {
+            <div key={y} className={Classes.GameRow} style={rowStyle}>
+                {columns.map(x => {
+                    const state = {x, y};
+                    // LOGIC
+                    // individual square classes
+                    let squareClasses = [Classes.GameSquare];
+                    if (robot.isVisited(state)) squareClasses.push(ClassesGrid.Visited);
+                    if (robot.isVisited(state)) squareClasses.push(ClassesGrid.Visited);
+                    if (robot.isVisitedInRound(state, robot.robotHistory[robot.t])) squareClasses.push(ClassesGrid.VisitedRound);
+                    if (robot.isFinish(state) && robot.isFinishReveald()) squareClasses.push(ClassesGrid.Finishing)
+                    if (robot.isTrap(state) && robot.isTrapRevealed(robot.isTrap(state))) squareClasses.push(ClassesGrid.Trap)
+                    squareClasses = squareClasses.join(" ")
+                    // robot classes
+                    let showRobot = false;
+                    if (y === moveSpecs.state.y && x === moveSpecs.state.x ) showRobot = true;
+                    let robotClasses = [
+                        Classes.Robocop,
+                        ClassesMovements[moveSpecs.currentMove],
+                        Classes[moveSpecs.facingDirection]
+                    ].join(" ");
+                    // rewards 
+                    let showRewards = true;
                     return (
-                        <div key={square}
-                            className={[
-                                Classes.GameSquare,
-                                robot.isVisited(square, row) && ClassesGrid.Visited,
-                                condition.isFinish(square, row) && condition.isFinishReveald() && ClassesGrid.Finishing,
-                                condition.isTrap(square, row) && condition.isTrapRevealed(condition.isTrap(square, row)) && ClassesGrid.Trap
-                            ].join(" ")}
+                        //printing the square 
+                        <div key={x}
+                            className={squareClasses}
                             style={squareStyle}>
-                                {/* printing the robot */}
-                            {row === moveSpecs.y && square === moveSpecs.x &&
+                            {/* printing the robot */}
+                            {showRobot &&
                                 <img
-                                    className={[
-                                        Classes.Robocop,
-                                        ClassesMovements[moveSpecs.currentMove],
-                                        Classes[moveSpecs.facingDirection]
-                                    ].join(" ")}
+                                    className={robotClasses}
                                     src={Robocop} alt="Robocop"
                                 />}
-                                {/* printing probs */}
-                                <span className={ClassesGrid.Probs}>{
-                                    robot.isVisitedInRound(
-                                        square, 
-                                        row,
-                                        moveSpecs.moves) && moveSpecs.probs[robot.whichVisitedInRound(
-                                            square, 
-                                            row,
-                                            moveSpecs.moves)]
-                                }</span>
+                            {/* printing probs */}
+                            <span className={ClassesGrid.Probs}>{
+                                showRewards && 
+                                robot.rewards_mat[state.x][state.y]
+                            }</span>
                         </div>
                     );
                 })}
@@ -100,10 +101,10 @@ const Game = props => {
         }, 700);
     }, [showScore, setShowScore]);
 
-    if (condition.isTrap(robot.x, robot.y) && !showScore.minus) {
+    if (robot.isTrap(moveSpecs.state) && !showScore.minus) {
         setShowScore({ ...showScore, minus: true })
     }
-    if (condition.isFinish(robot.x, robot.y) && !showScore.plus) {
+    if (robot.isFinish(moveSpecs.state) && !showScore.plus) {
         setShowScore({ ...showScore, plus: true })
     }
     let plusScore;
