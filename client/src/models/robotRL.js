@@ -50,7 +50,9 @@ export default class RobotRL extends State {
     move() {
         const moves = this.getAbsoluteMovesWithRewards();
         const move = this.choseMove(moves);
+        this.decreaseRewardOfVisitedState(move);
         this.state = move;
+        
         this.addToHistory(move);
         return move;
     }

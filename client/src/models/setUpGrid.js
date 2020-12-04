@@ -1,6 +1,6 @@
 
-export const rows = [...Array(4).keys()]
-export const columns = [...Array(4).keys()]
+export const rows = [...Array(10).keys()]
+export const columns = [...Array(10).keys()]
 
 const squareHeight = 40;
 const squareWidth = 40;

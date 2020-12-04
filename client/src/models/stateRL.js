@@ -9,7 +9,7 @@ export default class State extends Condition {
         this.stateHistory = [
             [{}]
         ];
-        this.h = .1; // history penalty parameter
+        this.h = .05; // history penalty parameter
         this.l = .1; // learning rate
         this.rewards_mat = [];
         for (let row = 0; row < this.rows; row++) {
@@ -23,13 +23,21 @@ export default class State extends Condition {
         }
     }
 
+    decreaseRewardOfVisitedState(state) {
+        this.rewards_mat[state.x][state.y] = this.rewards_mat[state.x][state.y] - this.h;
+    }
+
+    restoreRewardsOfVisitedStates(history) {
+        history.forEach((state, idx) => {
+            this.rewards_mat[state.x][state.y] = this.rewards_mat[state.x][state.y] + this.h;
+        });
+    }
 
     rewardsOfStates(states) { // states is an array of absolute moves eg [[10, 2], [3, 4]]
         states.forEach((state, idx) => {
             const reward = this.rewards_mat[state.x][state.y];
             states[idx] = {...states[idx], reward};
         });
-
         return states;
     }
 
@@ -73,6 +81,7 @@ export default class State extends Condition {
     }
 
     updateRewards(history, reward) {
+        this.restoreRewardsOfVisitedStates(history);
         history[history.length-1].reward = reward;
         history.reverse().forEach((state, idx) => {
             // let previousReward = history[idx].reward;
