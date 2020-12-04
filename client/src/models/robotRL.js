@@ -54,6 +54,7 @@ export default class RobotRL extends State {
         this.state = move;
         
         this.addToHistory(move);
+        this.increaseSteps()
         return move;
     }
 
@@ -108,6 +109,9 @@ export default class RobotRL extends State {
 
     decreaseSteps() {
         this.steps -= 1;
+    }
+    increaseSteps() {
+        this.steps += 1;
     }
     finish() {
         this.updateRewards(this.robotHistory[this.t], 1);

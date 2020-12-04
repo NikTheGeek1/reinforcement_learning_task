@@ -10,7 +10,7 @@ import Robocop from '../../static/images/human.png';
 import { gridStyle, rowStyle, squareStyle, rows, columns } from '../../models/setUpGrid';
 import { finishingCoordinates, trapsCoordinates } from '../../models/setUpConditions';
 
-const robot = new Robot(100, 100, rows.length, columns.length, finishingCoordinates, trapsCoordinates)
+const robot = new Robot(100, 0, rows.length, columns.length, finishingCoordinates, trapsCoordinates)
 
 const Game = props => {
     const [showScore, setShowScore] = useState({ plus: false, minus: false })
