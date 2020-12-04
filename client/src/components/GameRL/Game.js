@@ -29,7 +29,7 @@ const Game = props => {
                 state: moveObj
             });
             
-        }, 1000);
+        }, 500);
         return () => clearTimeout(timer)
     }, [moveSpecs])
 
