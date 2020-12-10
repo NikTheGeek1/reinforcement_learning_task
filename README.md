@@ -1,1 +1,1 @@
-(http://learning-task.herokuapp.com/)[http://learning-task.herokuapp.com/]
+[Visit the task here](http://learning-task.herokuapp.com/)
