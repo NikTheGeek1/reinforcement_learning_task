@@ -1,5 +1,10 @@
 @import '../../SASS/variables';
 
+.OuterContainer {
+    display: grid;
+    grid-area: game;
+}
+
 .GameGrid {
     display: grid;
 }

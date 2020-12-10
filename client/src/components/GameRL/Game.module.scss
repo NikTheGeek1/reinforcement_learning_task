@@ -1,5 +1,10 @@
 @import '../../SASS/variables';
 
+.OuterContainer {
+    display: grid;
+    grid-area: game;
+}
+
 .GameGrid {
     display: grid;
 }
@@ -25,3 +30,5 @@
 .RobocopRev {
     transform: scaleX(-1);
 }
+
+

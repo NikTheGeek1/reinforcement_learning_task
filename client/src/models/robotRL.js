@@ -5,11 +5,12 @@ export default class RobotRL extends State {
         super(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates);
         this.state = { x: 0, y: 0 }
         this.t = 0;
+        this.e = .1;
         this.legalMoves = this.setLegalMoves();
         this.score = score;
         this.steps = steps;
         this.robotHistory = [
-            [{...this.state, reward: this.rewards_mat[0][0]}]
+            [{ ...this.state, reward: this.rewards_mat[0][0] }]
         ];
     };
 
@@ -49,21 +50,21 @@ export default class RobotRL extends State {
 
     move() {
         const moves = this.getAbsoluteMovesWithRewards();
-        const move = this.choseMove(moves);
+        const move = this.chooseMoveExplorationOnlyNonVisited(moves);
         this.decreaseRewardOfVisitedState(move);
         this.state = move;
-        
-        this.addToHistory(move);
-        this.increaseSteps()
+        const otherMoves = moves.filter(mv => mv !== move);
+        this.addToHistory({...move, alternatives: [...otherMoves]});
+        this.increaseSteps();
         return move;
     }
 
     choseMove(moves) {
         let idxOfHigherReward = 0;
         // exploration
-        if (Math.random() < .1) {
+        if (Math.random() < this.e) {
             // TODO: randomly choose one of the non-visited moves
-            const idxOfHigherReward = Math.floor(Math.random() * moves.length); 
+            const idxOfHigherReward = Math.floor(Math.random() * moves.length);
         } else {
             // exploitation
             let higherReward = moves[idxOfHigherReward].reward;
@@ -71,7 +72,7 @@ export default class RobotRL extends State {
                 if (moves[idx].reward > higherReward) {
                     higherReward = moves[idx].reward;
                     idxOfHigherReward = idx;
-                } 
+                }
                 else if (moves[idx].reward === higherReward) {
                     if (Math.random() > .5) idxOfHigherReward = idx;
                 }
@@ -80,12 +81,44 @@ export default class RobotRL extends State {
         return moves[idxOfHigherReward];
     }
 
+    whichNonVisted(moves) {
+        const nonVisited = moves.filter(move => !this.isVisited(move));
+        return nonVisited;
+    }
+
+    chooseMoveExplorationOnlyNonVisited(moves) {
+        // exploration
+        if (Math.random() < this.e && this.whichNonVisted(moves).length) {
+            const nonVisited = this.whichNonVisted(moves);
+            const idxChosen = Math.floor(Math.random() * nonVisited.length);
+            return nonVisited[idxChosen];
+        } else {
+            let idxOfHigherReward = 0;
+            if (Math.random() < .1) {
+                idxOfHigherReward = Math.floor(Math.random() * moves.length);
+            } else {
+                // exploitation
+                let higherReward = moves[idxOfHigherReward].reward;
+                for (let idx = 0; idx < moves.length; idx++) {
+                    if (moves[idx].reward > higherReward) {
+                        higherReward = moves[idx].reward;
+                        idxOfHigherReward = idx;
+                    }
+                    else if (moves[idx].reward === higherReward) {
+                        if (Math.random() > .5) idxOfHigherReward = idx;
+                    }
+                }
+            }
+            return moves[idxOfHigherReward];
+        }
+    }
+
     addToHistory(move) {
         this.robotHistory[this.t].push(move);
     }
 
     fellInTrap() {
-        this.updateRewards(this.robotHistory[this.t], -1);
+        this.updateRewards(this.robotHistory[this.t], -10);
         this.decreaseScore(10);
         this.increaseRound();
         this.goToStart();
@@ -114,7 +147,7 @@ export default class RobotRL extends State {
         this.steps += 1;
     }
     finish() {
-        this.updateRewards(this.robotHistory[this.t], 1);
+        this.updateRewards(this.robotHistory[this.t], 10);
         this.increaseScore(50);
         this.increaseRound();
         this.goToStart();

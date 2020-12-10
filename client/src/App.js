@@ -1,11 +1,27 @@
 import React from 'react';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 
-import Game from './components/GameRL/Game';
+import Dashboard from './pages/Dashboard/Dashboard';
+
+import GameTypeReducer from './store/reducers/gameType';
+import parametersReducer from './store/reducers/parameters';
+
+const rootReducer = combineReducers({
+  gameType: GameTypeReducer,
+  parameters: parametersReducer
+});
+
+const store = createStore(rootReducer);
+
 
 const App = props => {
-    return (
-      <Game />
-    );
+
+  return (
+    <Provider store={store}>
+      <Dashboard />
+    </Provider>
+  );
 };
 
 export default App;

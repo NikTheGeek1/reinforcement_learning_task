@@ -3,16 +3,26 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Classes from './Game.module.scss';
 import ClassesMovements from './Movements.module.scss';
 import ClassesScore from './ScoreBoard.module.scss';
-
 import ClassesGrid from './Grid.module.scss';
 import Robot from '../../models/robotRL';
+import Report from '../../models/report.js';
 import Robocop from '../../static/images/human.png';
 import { gridStyle, rowStyle, squareStyle, rows, columns } from '../../models/setUpGrid';
 import { finishingCoordinates, trapsCoordinates } from '../../models/setUpConditions';
+import { useSelector } from 'react-redux';
+
 
 const robot = new Robot(100, 0, rows.length, columns.length, finishingCoordinates, trapsCoordinates)
-
+const report = new Report();
 const Game = props => {
+    const parameters = useSelector(state => state.parameters.valueIteration);
+    useEffect(() => {
+        robot.score = parameters.score;
+        robot.steps = parameters.steps;
+        robot.h = parameters.h;
+        robot.l = parameters.l;
+        robot.e = parameters.e;
+    }, [parameters])
     const [showScore, setShowScore] = useState({ plus: false, minus: false })
     const [moveSpecs, setMoveSpecs] = useState({
         state: robot.state,
@@ -21,15 +31,14 @@ const Game = props => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            
-            const moveObj = robot.move();
 
+            const moveObj = robot.move();
             setMoveSpecs({
                 ...moveSpecs,
                 state: moveObj
             });
-            
-        }, 200);
+
+        }, parameters.robotTimeMs);
         return () => clearTimeout(timer)
     }, [moveSpecs])
 
@@ -51,7 +60,7 @@ const Game = props => {
         return (
             <div key={y} className={Classes.GameRow} style={rowStyle}>
                 {columns.map(x => {
-                    const state = {x, y};
+                    const state = { x, y };
                     // LOGIC
                     // individual square classes
                     let squareClasses = [Classes.GameSquare];
@@ -63,7 +72,7 @@ const Game = props => {
                     squareClasses = squareClasses.join(" ")
                     // robot classes
                     let showRobot = false;
-                    if (y === moveSpecs.state.y && x === moveSpecs.state.x ) showRobot = true;
+                    if (y === moveSpecs.state.y && x === moveSpecs.state.x) showRobot = true;
                     let robotClasses = [
                         Classes.Robocop,
                         ClassesMovements[moveSpecs.currentMove],
@@ -84,7 +93,7 @@ const Game = props => {
                                 />}
                             {/* printing probs */}
                             <span className={ClassesGrid.Probs}>{
-                                showRewards && 
+                                showRewards &&
                                 robot.rewards_mat[state.x][state.y]
                             }</span>
                         </div>
@@ -102,7 +111,9 @@ const Game = props => {
     }, [showScore, setShowScore]);
 
     if (robot.isTrap(moveSpecs.state) && !showScore.minus) {
-        setShowScore({ ...showScore, minus: true })
+        const chanceOfExplor = report.getChanceOfExploringForAllRounds(robot.robotHistory);
+        console.log(chanceOfExplor, 'Game.js', 'line: ', '107');
+        setShowScore({ ...showScore, minus: true });
     }
     if (robot.isFinish(moveSpecs.state) && !showScore.plus) {
         setShowScore({ ...showScore, plus: true })
@@ -119,9 +130,10 @@ const Game = props => {
         cleanScore('minus')
     }
     ///////
+
     return (
-        <div className={Classes.GameGrid} style={gridStyle}>
-            <div className={ClassesScore.Container}>
+        <div className={Classes.OuterContainer}>
+            <div className={ClassesScore.ScoreContainer}>
                 <h3>Score Board</h3>
                 <hr />
                 <div className={ClassesScore.StepsDiv}>
@@ -132,7 +144,14 @@ const Game = props => {
                         {plusScore} {minusScore}</p>
                 </div>
             </div>
-            {grid}
+            <div className={Classes.GameGrid} style={gridStyle}>
+                {grid}
+            </div>
+            <button onClick={() => props.onShowStats(
+                report.stepsToFinishInEachRound(robot.robotHistory, robot.finishingCoordinates).length,
+                report.stepsToFinishInEachRound(robot.robotHistory, robot.finishingCoordinates)
+            )}>
+                Stats</button>
         </div>
     );
 };

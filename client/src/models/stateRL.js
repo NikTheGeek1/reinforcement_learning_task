@@ -9,15 +9,14 @@ export default class State extends Condition {
         this.stateHistory = [
             [{}]
         ];
-        this.h = .05; // history penalty parameter
-        this.l = .1; // learning rate
+        this.h = 5; // history penalty parameter
+        this.l = .2; // learning rate
         this.rewards_mat = [];
         for (let row = 0; row < this.rows; row++) {
             const row_list = []
             for (let column = 0; column < this.columns; column++) {
                 // if it's finish
-                
-                row_list.push(0)
+                row_list.push(1)
             }
             this.rewards_mat.push(row_list)
         }
@@ -88,11 +87,10 @@ export default class State extends Condition {
             // if (idx !== 0) {
             //     previousReward = history[idx-1].reward;
             // }
-            
             this.rewards_mat[state.x][state.y] = history[idx].reward + this.l * (reward - history[idx].reward);
-            history[idx].reward = this.rewards_mat[state.x][state.y];
+            // history[idx].reward = this.rewards_mat[state.x][state.y];
         })
-
+        history.reverse();
         return history;
     }
 }
