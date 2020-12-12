@@ -22,6 +22,10 @@ const Game = props => {
     }, [parameters.score]);
 
     useEffect(() => {
+        robot.steps = parameters.steps;
+    }, [parameters.steps]);
+
+    useEffect(() => {
         robot.h = parameters.h;
     }, [parameters.h]);
 

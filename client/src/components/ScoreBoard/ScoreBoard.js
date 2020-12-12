@@ -1,11 +1,23 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Classes from './ScoreBoard.module.scss';
 
+/*
+plus={false}
+minus={false}
+finishReward=
+trapPenalty=
+steps=
+score=
+*/
 
 
 const ScoreBoard = props => {
-    const [showScore, setShowScore] = useState({ plus: props.plus, minus: props.minus })
+    const [showScore, setShowScore] = useState({ plus: false, minus: false });
+
+    useEffect(() => {
+        setShowScore({ plus: props.plus, minus: props.minus });
+    }, [props.plus, props.minus]);
 
     const cleanScore = useCallback((scoreType) => {
         const timer = setTimeout(() => {
@@ -17,12 +29,12 @@ const ScoreBoard = props => {
     let plusScore;
     let minusScore;
     if (showScore.plus) {
-        plusScore = <span className={Classes.PlusScore}> +50</span>;
+        plusScore = <span className={Classes.PlusScore}> {props.finishReward}</span>;
         cleanScore('plus');
     }
-    
+
     if (showScore.minus) {
-        minusScore = <span className={Classes.MinusScore}> -10</span>;
+        minusScore = <span className={Classes.MinusScore}> {props.trapPenalty}</span>;
         cleanScore('minus')
     }
     return (

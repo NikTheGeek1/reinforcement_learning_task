@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GridComponent from '../Grid/Grid';
+import ScoreBoard from '../ScoreBoard/ScoreBoard';
 
 import Classes from './GameQ.module.scss';
 
@@ -12,26 +13,34 @@ import { useSelector } from 'react-redux';
 
 const algorithm = new Qlearning(rows, columns);
 const grid = new Grid(rows, columns, finishingCoordinates, trapsCoordinates);
-const robot = new Robot(algorithm, grid, {x: 0, y: 0});
+const robot = new Robot(algorithm, grid, { x: 0, y: 0 });
 
 const GameQ = props => {
-    const [dummyRender, setDummyRender] = useState(0);
+    const [scoreBoard, setScoreBoard] = useState({ showPlus: false, showMinus: false, dummy: 0 });
     const parameters = useSelector(state => state.parameters.qLearning);
 
     useEffect(() => {
 
         const timer = setTimeout(() => {
-            robot.move();
-            setDummyRender(old => old + 1);
+            const trapOrFinish = robot.move();
+            setScoreBoard({showMinus: false, showPlus: true, dummy: scoreBoard.dummy + 1});
+            trapOrFinish === 'finish' && setScoreBoard({showMinus: false, showPlus: true});
+            trapOrFinish === 'trap' && setScoreBoard({showMinus: true, showPlus: false});
         }, 20);
 
         return () => clearTimeout(timer)
-    }, [dummyRender, parameters.robotTimeMs, ]);
-
+    }, [scoreBoard, parameters.robotTimeMs]);
     return (
         <div className={Classes.OuterContainer}>
-            {/* scoreContainer */}
-            <GridComponent 
+            <ScoreBoard
+                plus={true}
+                minus={scoreBoard.showMinus}
+                finishReward={robot.grid.finishReward}
+                trapPenalty={robot.grid.trapPenalty}
+                steps={robot.steps}
+                score={robot.score}
+            />
+            <GridComponent
                 robot={robot}
                 rewards={true}
             />

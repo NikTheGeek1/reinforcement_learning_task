@@ -31,8 +31,14 @@ export default class Robot {
         // push to history 
         this.pushToHistory({ ...move, alternatives: altMoves });
         this.increaseSteps();
-        this.grid.isTrap(move) && this.fellInTrap();
-        this.grid.isFinish(move) && this.fellInFinish();
+        if (this.grid.isTrap(move)) {
+            this.fellInTrap();
+            return 'trap';
+        } 
+        if (this.grid.isFinish(move)) {
+            this.fellInFinish();
+            return 'finish';
+        } 
     }
 
     pushToHistory(move) {
@@ -91,20 +97,17 @@ export default class Robot {
 
     fellInTrap() {
         this.algorithm.updateRewards(this.history[this.t], this.grid.trapPenalty);
-        this.decreaseScore(this.grid.trapPenalty);
+        this.updateScore(this.grid.trapPenalty);
         this.goToStart();
     }
 
     fellInFinish() {
         this.algorithm.updateRewards(this.history[this.t], this.grid.finishReward);
-        this.increaseScore(this.grid.finishReward)
+        this.updateScore(this.grid.finishReward)
         this.goToStart();
     }
 
-    decreaseScore(amount) {
-        this.score -= amount;
-    }
-    increaseScore(amount) {
+    updateScore(amount) {
         this.score += amount;
     }
     decreaseSteps() {
