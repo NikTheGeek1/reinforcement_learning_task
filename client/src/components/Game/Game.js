@@ -105,7 +105,7 @@ const Game = props => {
                             className={[
                                 Classes.GameSquare,
                                 robot.isVisited({ x: square, y: row }) && ClassesGrid.Visited,
-                                robot.isFinish({ x: square, y: row }) && robot.isFinishReveald() && ClassesGrid.Finishing,
+                                robot.isFinish({ x: square, y: row }) && robot.isFinishReveald(robot.isFinish({ x: square, y: row })) && ClassesGrid.Finishing,
                                 robot.isTrap({ x: square, y: row }) && robot.isTrapRevealed(robot.isTrap({ x: square, y: row })) && ClassesGrid.Trap
                             ].join(" ")}
                             style={squareStyle}>

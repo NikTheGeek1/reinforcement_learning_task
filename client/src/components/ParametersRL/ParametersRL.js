@@ -91,7 +91,7 @@ const ParametersRL = props => {
                         type="range"
                         min="1"
                         max="1000"
-                        step="100"
+                        step="10"
                         value={parameters.robotTimeMs}
                         className={Classes.Slider}
                         onChange={e => paramHandler(e, 'robotTimeMs')}

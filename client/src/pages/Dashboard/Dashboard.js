@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import GameValueIteration from '../../components/GameRL/Game';
 import GameHuman from '../../components/Game/Game';
+import GameQLearning from '../../components/GameQ/GameQ';
 import ReportFigure from '../../components/ReportFigure/ReportFigure';
 import Console from '../../components/Console/Console';
 
@@ -22,16 +23,19 @@ const Dashboard = props => {
         });
     };
 
-    let game; 
+    let game;
     let parameters;
     switch (GAME_TYPE_OPTIONS[gameTypeState.gameType]) {
         case GAME_TYPE_OPTIONS.valueIteration:
-            game = <GameValueIteration onShowStats={showStatsHandler}/>
+            game = <GameValueIteration onShowStats={showStatsHandler} />
             parameters = <ParametersValueIterations />
             break;
-    
+
         case GAME_TYPE_OPTIONS.human:
             game = <GameHuman />;
+            break;
+        case GAME_TYPE_OPTIONS.qLearning:
+            game = <GameQLearning />;
             break;
         default:
             break;

@@ -1,0 +1,43 @@
+@import '../../SASS/variables';
+
+.GameRow {
+    display: flex;
+}
+
+.GameSquare {
+    background-color: #101010;
+    border: 2px solid black;
+}
+
+.Robot {
+    position: relative;
+    display: block;
+    height: 37px;
+    margin: auto;
+}
+
+.west {
+    transform: scaleX(-1);
+}
+
+.Visited {
+    background-color: #9d03ff;
+    transition:  background-color 1s;
+}
+
+.VisitedInRound {
+    background-color: indianred !important;
+    transition: 1s;
+}
+
+.FinishLine {
+    background-color: green !important;
+}
+
+.Trap {
+    background-color: red !important;;
+}
+
+.Rewards {
+    color: white;
+}

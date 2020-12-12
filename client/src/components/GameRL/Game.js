@@ -16,13 +16,24 @@ const robot = new Robot(100, 0, rows.length, columns.length, finishingCoordinate
 const report = new Report();
 const Game = props => {
     const parameters = useSelector(state => state.parameters.valueIteration);
+
     useEffect(() => {
         robot.score = parameters.score;
-        robot.steps = parameters.steps;
+    }, [parameters.score]);
+
+    useEffect(() => {
         robot.h = parameters.h;
+    }, [parameters.h]);
+
+    useEffect(() => {
         robot.l = parameters.l;
+    }, [parameters.l]);
+
+    useEffect(() => {
         robot.e = parameters.e;
-    }, [parameters])
+    }, [parameters.e]);
+
+
     const [showScore, setShowScore] = useState({ plus: false, minus: false })
     const [moveSpecs, setMoveSpecs] = useState({
         state: robot.state,
@@ -40,7 +51,7 @@ const Game = props => {
 
         }, parameters.robotTimeMs);
         return () => clearTimeout(timer)
-    }, [moveSpecs])
+    }, [moveSpecs, parameters.robotTimeMs])
 
     useEffect(() => {
         if (robot.isTrap(moveSpecs.state)) {
@@ -65,9 +76,8 @@ const Game = props => {
                     // individual square classes
                     let squareClasses = [Classes.GameSquare];
                     if (robot.isVisited(state)) squareClasses.push(ClassesGrid.Visited);
-                    if (robot.isVisited(state)) squareClasses.push(ClassesGrid.Visited);
                     if (robot.isVisitedInRound(state, robot.robotHistory[robot.t])) squareClasses.push(ClassesGrid.VisitedRound);
-                    if (robot.isFinish(state) && robot.isFinishReveald()) squareClasses.push(ClassesGrid.Finishing)
+                    if (robot.isFinish(state) && robot.isFinishReveald(robot.isFinish(state))) squareClasses.push(ClassesGrid.Finishing)
                     if (robot.isTrap(state) && robot.isTrapRevealed(robot.isTrap(state))) squareClasses.push(ClassesGrid.Trap)
                     squareClasses = squareClasses.join(" ")
                     // robot classes

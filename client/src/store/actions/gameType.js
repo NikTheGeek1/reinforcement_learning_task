@@ -2,8 +2,9 @@ export const CHANGE_TYPE = 'CHANGE_TYPE';
 
 
 export const GAME_TYPE_OPTIONS = {
+    human: 'human',
     valueIteration: 'valueIteration',
-    human: 'human'
+    qLearning: 'qLearning'
 };
 
 export const changeType = type => {

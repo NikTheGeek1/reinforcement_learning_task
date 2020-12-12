@@ -94,7 +94,7 @@ export default class RobotRL extends State {
             return nonVisited[idxChosen];
         } else {
             let idxOfHigherReward = 0;
-            if (Math.random() < .1) {
+            if (Math.random() < this.e) {
                 idxOfHigherReward = Math.floor(Math.random() * moves.length);
             } else {
                 // exploitation

@@ -1,4 +1,4 @@
-import { rows, columns } from './setUpGrid';
+// import { rows, columns } from './setUpGrid';
 
 // for a 10 X 10 grid random
 // export const finishingCoordinates = { x: columns.length - 1, y: rows.length - 1 };
@@ -48,7 +48,7 @@ import { rows, columns } from './setUpGrid';
 
 
 // for a 10 X 10 2 pathways
-export const finishingCoordinates = { x: 3, y: 4};
+export const finishingCoordinates = [{ x: 3, y: 4}];
 export const trapsCoordinates = [
         { x: 4, y: 1 },
         { x: 4, y: 3 },

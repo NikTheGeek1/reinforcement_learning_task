@@ -24,6 +24,7 @@ export default class Report {
         const chanceOfExploringInRounds = allHistory.map(round => {
             return this.getChanceOfExploring(round);
         });
+        
         const total = this.sum(chanceOfExploringInRounds);
         return total / allHistory.length;
     }
@@ -34,7 +35,7 @@ export default class Report {
         return total;
     }
 
-    stepsBeforeFinish(history, finishState) {
+    stepsBeforeFinish(history, finishStates) {
         // Getting the number of steps it took them 
         // to find the finishing state
         let numSteps = 0;
@@ -44,15 +45,18 @@ export default class Report {
             const round = history[idxRound];
             numSteps += round.length;
             const endingState = round[round.length - 1];
-            if (endingState.x === finishState.x && endingState.y === finishState.y) {
-                foundFinish = true;
+            for (let i = 0; i < finishStates.length; i++) {                
+                if (endingState.x === finishStates[i].x && endingState.y === finishStates[i].y) {
+                    foundFinish = true;
+                    break;
+                }
             }
             idxRound++;
         }
         return numSteps;
     }
 
-    roundsBeforeFinish(history, finishState) {
+    roundsBeforeFinish(history, finishStates) {
         // Getting the number of rounds it took them 
         // to find the finishing state
         let foundFinish = false;
@@ -60,23 +64,29 @@ export default class Report {
         while (!foundFinish) {
             const round = history[idxRound];
             const endingState = round[round.length - 1];
-            if (endingState.x === finishState.x && endingState.y === finishState.y) {
-                foundFinish = true;
+            for (let i = 0; i < finishStates.length; i++) {                
+                if (endingState.x === finishStates[i].x && endingState.y === finishStates[i].y) {
+                    foundFinish = true;
+                    break;
+                }
             }
             idxRound++;
         }
         return idxRound;
     }
 
-    stepsToFinishInEachRound(history, finishState) {
+    stepsToFinishInEachRound(history, finishStates) {
         // gets the number of steps in each winning round
         // returns an array of numbers
         const numSteps = [];
         for (const round of history) {
             if (round.length) {
                 const endingState = round[round.length - 1];
-                if (endingState.x === finishState.x && endingState.y === finishState.y) {
-                    numSteps.push(round.length);
+                for (let i = 0; i < finishStates.length; i++) {                
+                    if (endingState.x === finishStates[i].x && endingState.y === finishStates[i].y) {
+                        numSteps.push(round.length);
+                        break;
+                    }
                 }
             }
         }

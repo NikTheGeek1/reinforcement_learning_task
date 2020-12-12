@@ -8,10 +8,17 @@ const initialState = {
         l: .2,
         e: .1,
         robotTimeMs: 200
+    },
+    qLearning: {
+        score: 100,
+        steps: 0,
+        h: .5,
+        a: .2,
+        robotTimeMs: 200
     }
 };
 
-export default (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_PARAMETER:
             return {
@@ -26,3 +33,5 @@ export default (state = initialState, action) => {
             return state;
     }
 };
+
+export default reducer;

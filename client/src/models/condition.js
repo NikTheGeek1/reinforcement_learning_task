@@ -3,8 +3,16 @@ export default class Condition {
         finishingCoordinates,
         trapsCoordinates
     ) {
-        this.finishingCoordinates = { ...finishingCoordinates, revealed: false };
+
+        this.finishingCoordinates = finishingCoordinates.map(coord => {
+            return { ...coord, revealed: false };
+        });
+        
+
         this.numberOfTraps = trapsCoordinates.length;
+        this.numberOfFinishLines = this.finishingCoordinates.length;
+
+
         this.trapsSpecs = trapsCoordinates.map(coord => {
             return { ...coord, revealed: false }
         });
@@ -18,11 +26,14 @@ export default class Condition {
         }
     }
     isFinish(state) {
-        if (this.finishingCoordinates.x === state.x &&
-            this.finishingCoordinates.y === state.y) return true;
+        for (let i = 0; i < this.finishingCoordinates.length; i++) {
+            if (state.x === this.finishingCoordinates[i].x && state.y === this.finishingCoordinates[i].y) {
+                return this.finishingCoordinates[i];
+            }
+        }
     }
-    isFinishReveald() {
-        return this.finishingCoordinates.revealed;
+    isFinishReveald(finishLine) {
+        return finishLine.revealed;
     }
 
     isTrapRevealed(trap) {
@@ -36,8 +47,9 @@ export default class Condition {
     }
 
     revealFinish(state) {
-        if (this.finishingCoordinates.x === state.x &&
-            this.finishingCoordinates.y === state.y) this.finishingCoordinates.revealed = true;
+        this.finishingCoordinates.forEach(finish => {
+            if (finish.x === state.x && finish.y === state.y) finish.revealed = true;
+        });
     }
 
 

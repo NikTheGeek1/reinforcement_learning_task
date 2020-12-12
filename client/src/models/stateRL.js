@@ -20,6 +20,16 @@ export default class State extends Condition {
             }
             this.rewards_mat.push(row_list)
         }
+
+        this.rewardsHistory = [this.deepCopy(this.rewards_mat)];
+    }
+
+    deepCopy(fromArray) {
+        const newAarray = [];
+        for (let i = 0; i < fromArray.length; i++) {
+            newAarray.push([...fromArray[i]]);
+        }
+        return newAarray;
     }
 
     decreaseRewardOfVisitedState(state) {
@@ -81,16 +91,16 @@ export default class State extends Condition {
 
     updateRewards(history, reward) {
         this.restoreRewardsOfVisitedStates(history);
+        let updatedReward = reward;
         history[history.length-1].reward = reward;
         history.reverse().forEach((state, idx) => {
-            // let previousReward = history[idx].reward;
-            // if (idx !== 0) {
-            //     previousReward = history[idx-1].reward;
-            // }
-            this.rewards_mat[state.x][state.y] = history[idx].reward + this.l * (reward - history[idx].reward);
-            // history[idx].reward = this.rewards_mat[state.x][state.y];
-        })
+            const currentReward = this.rewards_mat[state.x][state.y];
+            // this.rewards_mat[state.x][state.y] = history[idx].reward + this.l * (reward - history[idx].reward);
+            updatedReward = currentReward + this.l * (updatedReward - currentReward);
+            this.rewards_mat[state.x][state.y] = updatedReward;
+        });
         history.reverse();
+        this.rewardsHistory.push(this.deepCopy(this.rewards_mat));
         return history;
     }
 }

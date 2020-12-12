@@ -19,6 +19,7 @@ const Console = props => {
                 <select name="gameType" id="gameType" onChange={selectGameTypeHandler}>
                     <option value="valueIteration">Value iteration</option>
                     <option value="human">Play the game</option>
+                    <option value="qLearning">Q-Learning</option>
                 </select>
             </div>
         </div>

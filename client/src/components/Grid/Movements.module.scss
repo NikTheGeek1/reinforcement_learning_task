@@ -1,0 +1,12 @@
+@import '../../SASS/variables';
+
+.east,
+.west,
+.north,
+.south {
+    transition: all .2s;
+}
+.east {animation: moveRight .2s;}
+.north {animation: moveUp .2s;}
+.south {animation: moveDown .2s;}
+.west {animation: moveLeft .2s;}
