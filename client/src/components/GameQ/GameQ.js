@@ -33,7 +33,7 @@ const GameQ = props => {
     return (
         <div className={Classes.OuterContainer}>
             <ScoreBoard
-                plus={true}
+                plus={scoreBoard.showPlus}
                 minus={scoreBoard.showMinus}
                 finishReward={robot.grid.finishReward}
                 trapPenalty={robot.grid.trapPenalty}
