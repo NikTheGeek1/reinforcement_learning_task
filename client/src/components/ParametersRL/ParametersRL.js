@@ -20,7 +20,7 @@ const ParametersRL = props => {
                     <input
                         id="score"
                         type="range"
-                        min="1"
+                        min="0"
                         max="500"
                         value={parameters.score}
                         className={Classes.Slider}
@@ -32,7 +32,7 @@ const ParametersRL = props => {
                     <input
                         id="steps"
                         type="range"
-                        min="1"
+                        min="0"
                         max="1000"
                         step="1"
                         value={parameters.steps}
@@ -46,7 +46,7 @@ const ParametersRL = props => {
                     <input
                         id="h"
                         type="range"
-                        min=".1"
+                        min="0"
                         max="10"
                         step=".1"
                         value={parameters.h}
@@ -60,7 +60,7 @@ const ParametersRL = props => {
                     <input
                         id="e"
                         type="range"
-                        min=".01"
+                        min="0"
                         max="1"
                         step=".01"
                         value={parameters.e}
@@ -75,7 +75,7 @@ const ParametersRL = props => {
                     <input
                         id="l"
                         type="range"
-                        min=".01"
+                        min="0"
                         max="1"
                         step=".01"
                         value={parameters.l}
