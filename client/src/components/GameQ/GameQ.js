@@ -23,7 +23,7 @@ const GameQ = props => {
 
         const timer = setTimeout(() => {
             const trapOrFinish = robot.move();
-            setScoreBoard({ showMinus: false, showPlus: true, dummy: scoreBoard.dummy + 1 });
+            setScoreBoard({ showMinus: false, showPlus: false, dummy: scoreBoard.dummy + 1 });
             trapOrFinish === 'finish' && setScoreBoard({ showMinus: false, showPlus: true });
             trapOrFinish === 'trap' && setScoreBoard({ showMinus: true, showPlus: false });
         }, params.robotTimeMs);
@@ -59,7 +59,7 @@ const GameQ = props => {
     useEffect(() => {
         algorithm.initialReward = params.initialReward;
     }, [params.initialReward]);
-    
+
     useEffect(() => {
         grid.finishReward = params.reward;
     }, [params.reward]);
@@ -68,6 +68,15 @@ const GameQ = props => {
         grid.trapPenalty = params.penalty;
     }, [params.penalty]);
 
+
+    const analysisHandler = () => {
+        props.onAnalysis({
+            robotHistory: robot.history,
+            rewardsHistory: algorithm.rewardsHistory,
+            finishingCoords: grid.finishLines,
+            trapCoords: grid.traps
+        });
+    }; 
 
     const restartHandler = () => {
         algorithm = new Qlearning(rows, columns, params.initialReward, params.a, params.h, params.gamma, params.e);
@@ -91,7 +100,11 @@ const GameQ = props => {
                 rewards={true}
             />
             <button className={Classes.Btn} onClick={restartHandler}>
-                Restart</button>
+                Restart
+                </button>
+            <button className={Classes.Btn} onClick={analysisHandler}>
+                Analyse
+            </button>
         </div>
     );
 };

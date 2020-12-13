@@ -1,4 +1,7 @@
 export default class Report {
+    constructor() {
+        this.stepsToFinishInRound = [];
+    }
 
     getChanceOfExploring(history) {
         // get back an array of 0 and 1 indicating

@@ -15,28 +15,24 @@ import Classes from './Dashboard.module.scss';
 
 const Dashboard = props => {
     const gameTypeState = useSelector(state => state.gameType);
-    const [figureSpecs, setFigureSpecs] = useState({ x: null, y: null, show: false });
-    
-    const showStatsHandler = (x, y) => {
-        setFigureSpecs({
-            x: x,
-            y: y,
-            show: true
-        });
+    const [data, setData] = useState(null);
+
+    const analysisHandler = dataObj => {
+        setData(dataObj);
     };
 
     let game;
     let parameters;
     switch (GAME_TYPE_OPTIONS[gameTypeState.gameType]) {
         case GAME_TYPE_OPTIONS.valueIteration:
-            game = <GameValueIteration onShowStats={showStatsHandler} />;
+            game = <GameValueIteration onShowStats={analysisHandler} />;
             parameters = <ParametersValueIterations />;
             break;
         case GAME_TYPE_OPTIONS.human:
             game = <GameHuman />;
             break;
         case GAME_TYPE_OPTIONS.qLearning:
-            game = <GameQLearning />;
+            game = <GameQLearning onAnalysis={analysisHandler}/>;
             parameters = <ParametersQlearning />;
             break;
         default:
@@ -47,7 +43,7 @@ const Dashboard = props => {
         <div className={Classes.Dashboard}>
             {game}
             {parameters}
-            {figureSpecs.show && <ReportFigure x={figureSpecs.x} y={figureSpecs.y} />}
+            {data && <ReportFigure data={data}/>}
             <Console />
         </div>
     );

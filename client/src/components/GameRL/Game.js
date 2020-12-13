@@ -146,8 +146,6 @@ const Game = props => {
     }, [showScore, setShowScore]);
 
     if (robot.isTrap(moveSpecs.state) && !showScore.minus) {
-        const chanceOfExplor = report.getChanceOfExploringForAllRounds(robot.robotHistory);
-        console.log(chanceOfExplor, 'Game.js', 'line: ', '107');
         setShowScore({ ...showScore, minus: true });
     }
     if (robot.isFinish(moveSpecs.state) && !showScore.plus) {
@@ -182,10 +180,12 @@ const Game = props => {
             <div className={Classes.GameGrid} style={gridStyle}>
                 {grid}
             </div>
-            <button className={Classes.Btn} onClick={() => props.onShowStats(
-                report.stepsToFinishInEachRound(robot.robotHistory, robot.finishingCoordinates).length,
-                report.stepsToFinishInEachRound(robot.robotHistory, robot.finishingCoordinates)
-            )}>
+            <button className={Classes.Btn} onClick={() => props.onShowStats({
+                robotHistory: robot.robotHistory,
+                finishingCoords: robot.finishingCoordinates,
+                trapCoords: robot.trapsSpecs
+
+            })}>
                 Show Stats</button>
             <button className={Classes.Btn} onClick={restartHandler}>
                 Restart</button>
