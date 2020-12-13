@@ -1,17 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Classes from './ParametersRL.module.scss';
+import Classes from './ParametersQ.module.scss';
 
 import { changeParameter } from '../../store/actions/parameters';
 
 const ParametersRL = props => {
     const dispatch = useDispatch();
-    const parameters = useSelector(state => state.parameters.valueIteration);
+    const parameters = useSelector(state => state.parameters.qLearning);
 
 
     const paramHandler = (e, parameter) => {
-        dispatch(changeParameter('valueIteration', parameter, +e.target.value));
+        dispatch(changeParameter('qLearning', parameter, +e.target.value));
     };
 
     return (
@@ -116,18 +116,30 @@ const ParametersRL = props => {
 
             <div className={Classes.ParamContainer}>
                 <input
-                    id="l"
+                    id="a"
                     type="range"
                     min="0"
                     max="1"
                     step=".01"
-                    value={parameters.l}
+                    value={parameters.a}
                     className={Classes.Slider}
-                    onChange={e => paramHandler(e, 'l')}
+                    onChange={e => paramHandler(e, 'a')}
                 />
-                <label htmlFor="l">Learning rate (l): {parameters.l}</label>
+                <label htmlFor="a">Learning rate (a): {parameters.a}</label>
             </div>
-
+            <div className={Classes.ParamContainer}>
+                <input
+                    id="gamma"
+                    type="range"
+                    min="0"
+                    max="1"
+                    step=".1"
+                    value={parameters.gamma}
+                    className={Classes.Slider}
+                    onChange={e => paramHandler(e, 'gamma')}
+                />
+                <label htmlFor="gamma">Decay factor: {parameters.gamma}</label>
+            </div>
             <div className={Classes.ParamContainer}>
                 <input
                     id="robotTimeMs"

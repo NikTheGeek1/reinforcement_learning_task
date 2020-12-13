@@ -2,8 +2,8 @@
 export const rows = [...Array(10).keys()]
 export const columns = [...Array(10).keys()]
 
-const squareHeight = 40;
-const squareWidth = 40;
+const squareHeight = 45;
+const squareWidth = 45;
 
 const rowWidth = columns.length * squareWidth;
 const rowHeight = squareHeight;

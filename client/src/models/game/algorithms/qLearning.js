@@ -1,11 +1,11 @@
 export default class Qlearning {
-    constructor(rows, columns, initialReward = 0) {
+    constructor(rows, columns, initialReward = 0, a = .2, h = .2, gamma = .9, e = .1) {
         this.rows = rows;
         this.columns = columns;
-        this.h = 0.2; // history penalty parameter
-        this.a = .2 // learning rate
-        this.gamma = .9; // reward decay
-        this.e = .1 // exploration chance
+        this.h = h; // history penalty parameter
+        this.a = a; // learning rate
+        this.gamma = gamma; // reward decay
+        this.e = e; // exploration chance
         this.initialReward = initialReward;
 
         this.rewards_mat = this.initialiseRewards();

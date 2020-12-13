@@ -1,7 +1,7 @@
 import Condition from './condition';
 
 export default class State extends Condition {
-    constructor(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates) {
+    constructor(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates, initialReward) {
         super(finishingCoordinates, trapsCoordinates)
         
         this.rows = grid_rows;
@@ -9,19 +9,25 @@ export default class State extends Condition {
         this.stateHistory = [
             [{}]
         ];
+        this.initialReward = initialReward;
         this.h = 5; // history penalty parameter
         this.l = .2; // learning rate
         this.rewards_mat = [];
+        this.setInitialReward();
+        
+
+        this.rewardsHistory = [this.deepCopy(this.rewards_mat)];
+    }
+
+    setInitialReward() {
         for (let row = 0; row < this.rows; row++) {
             const row_list = []
             for (let column = 0; column < this.columns; column++) {
                 // if it's finish
-                row_list.push(1)
+                row_list.push(this.initialReward);
             }
             this.rewards_mat.push(row_list)
         }
-
-        this.rewardsHistory = [this.deepCopy(this.rewards_mat)];
     }
 
     deepCopy(fromArray) {

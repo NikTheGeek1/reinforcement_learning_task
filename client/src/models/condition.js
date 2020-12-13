@@ -8,7 +8,6 @@ export default class Condition {
             return { ...coord, revealed: false };
         });
         
-
         this.numberOfTraps = trapsCoordinates.length;
         this.numberOfFinishLines = this.finishingCoordinates.length;
 
@@ -25,6 +24,7 @@ export default class Condition {
             }
         }
     }
+
     isFinish(state) {
         for (let i = 0; i < this.finishingCoordinates.length; i++) {
             if (state.x === this.finishingCoordinates[i].x && state.y === this.finishingCoordinates[i].y) {
@@ -32,6 +32,7 @@ export default class Condition {
             }
         }
     }
+
     isFinishReveald(finishLine) {
         return finishLine.revealed;
     }

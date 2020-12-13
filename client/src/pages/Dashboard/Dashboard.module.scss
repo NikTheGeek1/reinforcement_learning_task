@@ -1,7 +1,10 @@
 .Dashboard {
+    justify-self: center;
     display: grid;
     grid-template-areas: 
-    "game figure"
-    "console console";
-
+    "game parameters"
+    "console console"
+    "figure figure";
+    grid-template-columns: 500px 450px;
+    row-gap: 10px;
 }

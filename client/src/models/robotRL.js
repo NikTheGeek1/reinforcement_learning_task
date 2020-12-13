@@ -1,11 +1,13 @@
 import State from './stateRL';
 
 export default class RobotRL extends State {
-    constructor(score, steps, grid_rows, grid_columns, finishingCoordinates, trapsCoordinates) {
-        super(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates);
+    constructor(score, steps, initialReward, grid_rows, grid_columns, finishingCoordinates, trapsCoordinates) {
+        super(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates, initialReward);
         this.state = { x: 0, y: 0 }
         this.t = 0;
         this.e = .1;
+        this.reward = 1;
+        this.penalty = -1;
         this.legalMoves = this.setLegalMoves();
         this.score = score;
         this.steps = steps;
@@ -118,7 +120,7 @@ export default class RobotRL extends State {
     }
 
     fellInTrap() {
-        this.updateRewards(this.robotHistory[this.t], -10);
+        this.updateRewards(this.robotHistory[this.t], this.penalty);
         this.decreaseScore(10);
         this.increaseRound();
         this.goToStart();
@@ -147,7 +149,7 @@ export default class RobotRL extends State {
         this.steps += 1;
     }
     finish() {
-        this.updateRewards(this.robotHistory[this.t], 10);
+        this.updateRewards(this.robotHistory[this.t], this.reward);
         this.increaseScore(50);
         this.increaseRound();
         this.goToStart();

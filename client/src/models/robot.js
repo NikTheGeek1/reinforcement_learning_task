@@ -2,7 +2,7 @@ import State from './stateRL';
 export default class Robot extends State {
 
     constructor(score, steps, grid_rows, grid_columns, finishingCoordinates, trapsCoordinates) {
-        super(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates);
+        super(grid_rows, grid_columns, finishingCoordinates, trapsCoordinates, 0);
         this.state = {
             x: 0,
             y: 0

@@ -1,12 +1,12 @@
 export default class Robot {
-    constructor(algorithm, grid, state, initialDirection = 'east') {
+    constructor(algorithm, grid, state, initialDirection = 'east', steps = 100, score = 100) {
         this.algorithm = algorithm;
         this.grid = grid;
         this.initialState = {...state};
         this.state = state;
         // robot parameters
-        this.steps = 100;
-        this.score = 100;
+        this.steps = steps;
+        this.score = score;
         //
         this._legalMoves = [];
         this.initialDirection = initialDirection;

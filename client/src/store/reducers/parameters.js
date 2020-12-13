@@ -7,14 +7,21 @@ const initialState = {
         h: .5,
         l: .2,
         e: .1,
-        robotTimeMs: 200
+        robotTimeMs: 200,
+        reward: 1,
+        penalty: -1,
+        initialReward: 1
     },
     qLearning: {
         score: 100,
         steps: 0,
         h: .5,
         a: .2,
-        robotTimeMs: 200
+        robotTimeMs: 200,
+        reward: 1,
+        penalty: -1,
+        initialReward: 1,
+        gamma: .9
     }
 };
 

@@ -12,9 +12,11 @@ import { finishingCoordinates, trapsCoordinates } from '../../models/setUpCondit
 import { useSelector } from 'react-redux';
 
 
-const robot = new Robot(100, 0, rows.length, columns.length, finishingCoordinates, trapsCoordinates)
+let robot = new Robot(100, 0, 1, rows.length, columns.length, finishingCoordinates, trapsCoordinates);
 const report = new Report();
+
 const Game = props => {
+    
     const parameters = useSelector(state => state.parameters.valueIteration);
 
     useEffect(() => {
@@ -37,6 +39,25 @@ const Game = props => {
         robot.e = parameters.e;
     }, [parameters.e]);
 
+    useEffect(() => {
+        robot.reward = parameters.reward;
+    }, [parameters.reward]);
+    useEffect(() => {
+        robot.penalty = parameters.penalty;
+    }, [parameters.penalty]);
+    useEffect(() => {
+        robot.initialReward = parameters.initialReward;
+    }, [parameters.initialReward]);
+
+    const restartHandler = () => {
+        robot = new Robot(parameters.steps, parameters.score, parameters.initialReward, rows.length, columns.length, finishingCoordinates, trapsCoordinates);
+        robot.h = parameters.h;
+        robot.l = parameters.l;
+        robot.e = parameters.e;
+        robot.reward = parameters.reward;
+        robot.penalty = parameters.penalty;
+        robot.setInitialReward();
+    };
 
     const [showScore, setShowScore] = useState({ plus: false, minus: false })
     const [moveSpecs, setMoveSpecs] = useState({
@@ -108,7 +129,7 @@ const Game = props => {
                             {/* printing probs */}
                             <span className={ClassesGrid.Probs}>{
                                 showRewards &&
-                                robot.rewards_mat[state.x][state.y]
+                                robot.rewards_mat[state.x][state.y].toFixed(2)
                             }</span>
                         </div>
                     );
@@ -161,11 +182,13 @@ const Game = props => {
             <div className={Classes.GameGrid} style={gridStyle}>
                 {grid}
             </div>
-            <button onClick={() => props.onShowStats(
+            <button className={Classes.Btn} onClick={() => props.onShowStats(
                 report.stepsToFinishInEachRound(robot.robotHistory, robot.finishingCoordinates).length,
                 report.stepsToFinishInEachRound(robot.robotHistory, robot.finishingCoordinates)
             )}>
-                Stats</button>
+                Show Stats</button>
+            <button className={Classes.Btn} onClick={restartHandler}>
+                Restart</button>
         </div>
     );
 };
