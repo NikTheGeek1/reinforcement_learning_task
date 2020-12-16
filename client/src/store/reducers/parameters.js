@@ -8,8 +8,8 @@ const initialState = {
         a: .2,
         e: .1,
         robotTimeMs: 200,
-        finishReward: 1,
-        trapPenalty: -1,
+        finishReward: 5,
+        trapPenalty: -5,
         initialReward: 1
     },
     qLearning: {

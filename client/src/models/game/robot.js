@@ -21,6 +21,7 @@ export default class RobotComputer {
 
         // set legal moves
         // choose move
+        
         const move = this.algorithm.chooseMove(this._legalMoves);
         this.algorithm.penaliseVisitedInRoundStates(move);
 
@@ -52,7 +53,7 @@ export default class RobotComputer {
         const legalMoves = [];
         if (this.state.x < this.grid.columns.length - 1) {
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('east', this.state),
+                reward: this.algorithm.getRewardOfState('east', {x: this.state.x + 1, y: this.state.y}),
                 direction: 'east',
                 x: this.state.x + 1,
                 y: this.state.y
@@ -60,7 +61,7 @@ export default class RobotComputer {
         }
         if (this.state.x > 0) { // left
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('west', this.state),
+                reward: this.algorithm.getRewardOfState('west', {x: this.state.x - 1, y: this.state.y}),
                 direction: 'west',
                 x: this.state.x - 1,
                 y: this.state.y
@@ -68,7 +69,7 @@ export default class RobotComputer {
         }
         if (this.state.y < this.grid.rows.length - 1) {
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('south', this.state),
+                reward: this.algorithm.getRewardOfState('south', {x: this.state.x, y: this.state.y + 1}),
                 direction: 'south',
                 x: this.state.x,
                 y: this.state.y + 1
@@ -76,13 +77,12 @@ export default class RobotComputer {
         }
         if (this.state.y > 0) {
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('north', this.state),
+                reward: this.algorithm.getRewardOfState('north', {x: this.state.x, y: this.state.y - 1}),
                 direction: 'north',
                 x: this.state.x,
                 y: this.state.y - 1
             })
         }
-        debugger
         this._legalMoves = legalMoves;
     }
 
