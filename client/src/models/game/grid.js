@@ -1,13 +1,12 @@
 export default class Grid {
-    constructor(rows, columns, finishingCoordinates, trapsCoordinates, trapPenalty = -1, finishReward = 1) {
+    constructor(rows, columns, finishingCoordinates, trapsCoordinates, params) {
         this.rows = rows;
         this.columns = columns;
-        this.trapPenalty = trapPenalty;
-        this.finishReward = finishReward;
+        this.trapPenalty = params.trapPenalty;
+        this.finishReward = params.finishReward;
         this.finishLines = finishingCoordinates.map(coord => {
             return { ...coord, revealed: false };
         });
-        
         
         this.numberOfTraps = trapsCoordinates.length;
         this.numberOfFinishLines = this.finishLines.length;

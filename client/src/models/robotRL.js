@@ -66,7 +66,7 @@ export default class RobotRL extends State {
         // exploration
         if (Math.random() < this.e) {
             // TODO: randomly choose one of the non-visited moves
-            const idxOfHigherReward = Math.floor(Math.random() * moves.length);
+            idxOfHigherReward = Math.floor(Math.random() * moves.length);
         } else {
             // exploitation
             let higherReward = moves[idxOfHigherReward].reward;

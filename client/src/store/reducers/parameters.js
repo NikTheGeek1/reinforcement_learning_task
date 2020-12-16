@@ -3,24 +3,25 @@ import { CHANGE_PARAMETER } from '../actions/parameters.js';
 const initialState = {
     valueIteration: {
         score: 100,
-        steps: 0,
-        h: .5,
-        l: .2,
+        steps: 100,
+        h: -.5,
+        a: .2,
         e: .1,
         robotTimeMs: 200,
-        reward: 1,
-        penalty: -1,
+        finishReward: 1,
+        trapPenalty: -1,
         initialReward: 1
     },
     qLearning: {
         score: 100,
-        steps: 0,
-        h: .5,
+        steps: 100,
+        h: -.5,
         a: .2,
+        e: .1,
         robotTimeMs: 200,
-        reward: 1,
-        penalty: -1,
-        initialReward: 1,
+        finishReward: 1,
+        trapPenalty: -1,
+        initialReward: 0,
         gamma: .9
     }
 };

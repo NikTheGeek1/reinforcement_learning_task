@@ -1,12 +1,12 @@
 export default class Qlearning {
-    constructor(rows, columns, initialReward = 0, a = .2, h = .2, gamma = .9, e = .1) {
+    constructor(rows, columns, params) {
         this.rows = rows;
         this.columns = columns;
-        this.h = h; // history penalty parameter
-        this.a = a; // learning rate
-        this.gamma = gamma; // reward decay
-        this.e = e; // exploration chance
-        this.initialReward = initialReward;
+        this.h = params.h; // history penalty parameter
+        this.a = params.a; // learning rate
+        this.gamma = params.gamma; // reward decay
+        this.e = params.e; // exploration chance
+        this.initialReward = params.initialReward;
 
         this.rewards_mat = this.initialiseRewards();
         this.rewardsHistory = [];
@@ -67,7 +67,6 @@ export default class Qlearning {
                 if (Math.random() > .5) maxRewardIdx = idx;
             }
         }
-        
         return moves[maxRewardIdx];
     }
 
@@ -83,7 +82,13 @@ export default class Qlearning {
     }
 
     penaliseVisitedInRoundStates(state) {
-        this.h && this.updateSelfFromAllDirections(state, -this.h);
+        this.h && this.updateSelfFromAllDirections(state, this.h);
+    }
+
+    restoreRewardsOfVisitedStates(history) {
+        this.h && history.forEach(state => {
+                this.updateSelfFromAllDirections(state, -this.h);
+        });
     }
 
     updateSelfFromAllDirections(state, value) {
@@ -120,7 +125,7 @@ export default class Qlearning {
     }
 
     updateRewards(history, reward) {
-        this.restoreRewardsOfVisitedStates(history.filter((_, i) => i !== history.length-1));
+        this.restoreRewardsOfVisitedStates(history.filter((_, i) => i !== history.length));
         // setting the final's state reward to the
         // corresponding reward (either trap or finish)
         let updatedReward = reward;
@@ -145,11 +150,7 @@ export default class Qlearning {
         return history;
     }
 
-    restoreRewardsOfVisitedStates(history) {
-        history.forEach(state => {
-            this.updateSelfFromAllDirections(state, this.h);
-        });
-    }
+    
 
     getRewardOfState(direction, state) {
         if (direction === 'east') return this.rewards_mat[state.x][state.y].east.reward;

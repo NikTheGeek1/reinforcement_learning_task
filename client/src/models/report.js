@@ -10,13 +10,7 @@ export default class Report {
         const history_ = history.filter(moveHist => moveHist.alternatives);
         const timesOfExploring = history_
             .map(move => {
-                for (const altMove of move.alternatives) {
-                    if (move.reward < altMove.reward) {
-                        return 1
-                    } else {
-                        return 0
-                    }
-                }
+                return move.alternatives.every(altMove => !(altMove.reward < move.reward));
             });
         const total = this.sum(timesOfExploring);
         return total / history_.length;

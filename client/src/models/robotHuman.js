@@ -1,4 +1,4 @@
-export default class RobotComputer {
+export default class Robot {
     constructor(algorithm, grid, state, params, initialDirection = 'east') {
         this.algorithm = algorithm;
         this.grid = grid;
@@ -12,41 +12,24 @@ export default class RobotComputer {
         this.initialDirection = initialDirection;
         this.history = [[{ reward: algorithm.initialReward, direction: this.initialDirection, ...state, alternatives: null }]];
         this.t = 0;
-        this.algorithm.penaliseVisitedInRoundStates(this.state);
         this.setLegalMoves();
+        this.algorithm.penaliseVisitedInRoundStates(this.state, this.grid);
+
     }
-
-    move() {
-        // decrease rewards visited in round. 0 h for no penalty
-
-        // set legal moves
-        // choose move
-        const move = this.algorithm.chooseMove(this._legalMoves);
-        this.algorithm.penaliseVisitedInRoundStates(move);
-
-        this.state = move;
-        this.setLegalMoves();
-
-        // move 
-
-        // get alternatives 
-        const altMoves = this._legalMoves.filter(altMove => altMove !== move);
-        // push to history 
-        this.pushToHistory({ ...move, alternatives: altMoves });
-        this.increaseSteps();
-        if (this.grid.isTrap(move)) {
-            this.fellInTrap();
-            return 'trap';
-        }
-        if (this.grid.isFinish(move)) {
-            this.fellInFinish();
-            return 'finish';
-        }
-    }
-
     pushToHistory(move) {
         this.history[this.t].push(move);
     }
+
+    isLegal(move) {
+        return this._legalMoves.filter(mv => mv.direction === move).length !== 0;
+    }
+
+    getMove(move) {
+        return this._legalMoves.filter(mv => mv.direction === move)[0];
+    }
+
+    
+
 
     setLegalMoves() {
         const legalMoves = [];
@@ -82,8 +65,71 @@ export default class RobotComputer {
                 y: this.state.y - 1
             })
         }
-        debugger
         this._legalMoves = legalMoves;
+    }
+
+    moveWest() {
+        // if (!this.checkStepsMoreThanZero()) {
+        //     return this.gameOver()
+        // }
+        if (this.isLegal('west')) {
+            const move = this.getMove('west');
+            return this.move(move);
+        }
+    }
+
+    moveEast() {
+        // if (!this.checkStepsMoreThanZero()) {
+        //     return this.gameOver()
+        // }
+        if (this.isLegal('east')) {
+            const move = this.getMove('east');
+            return this.move(move);
+        }
+    }
+
+    moveNorth() {
+        // if (!this.checkStepsMoreThanZero()) {
+        //     return this.gameOver()
+        // }
+        if (this.isLegal('north')) {
+            const move = this.getMove('north');
+            return this.move(move);
+        }
+    }
+
+    moveSouth() {
+        // if (!this.checkStepsMoreThanZero()) {
+        //     return this.gameOver()
+        // }
+        if (this.isLegal('south')) {
+            const move = this.getMove('south');
+            return this.move(move);
+        }
+    }
+
+    move(move) {
+        // decrease rewards visited in round. 0 h for no penalty
+        this.algorithm.penaliseVisitedInRoundStates(move);
+
+        // set legal moves
+        
+        this.state = move;
+        this.setLegalMoves();
+       
+        // get alternatives 
+        const altMoves = this._legalMoves.filter(altMove => altMove !== move);
+        // push to history 
+        this.pushToHistory({ ...move, alternatives: altMoves });
+        this.increaseSteps();
+        if (this.grid.isTrap(move)) {
+            this.fellInTrap();
+            return 'trap';
+        } 
+        if (this.grid.isFinish(move)) {
+            this.fellInFinish();
+            return 'finish';
+        } 
     }
 
     goToStart() {
@@ -130,4 +176,6 @@ export default class RobotComputer {
     isRobotOnState(state) {
         return this.state.x === state.x && this.state.y === state.y;
     }
+
+
 }

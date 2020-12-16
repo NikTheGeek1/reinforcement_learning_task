@@ -6,10 +6,12 @@ import Dashboard from './pages/Dashboard/Dashboard';
 
 import GameTypeReducer from './store/reducers/gameType';
 import parametersReducer from './store/reducers/parameters';
+import behaviourAlgoReducer from './store/reducers/analyseHumanBehaviour';
 
 const rootReducer = combineReducers({
   gameType: GameTypeReducer,
-  parameters: parametersReducer
+  parameters: parametersReducer,
+  behaviourAlgo: behaviourAlgoReducer
 });
 
 const store = createStore(rootReducer);

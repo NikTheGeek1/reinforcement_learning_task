@@ -4,7 +4,7 @@ const initialState = {
     gameType: 'valueIteration'
 };
 
-export default (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
 
         case CHANGE_TYPE:
@@ -14,3 +14,6 @@ export default (state = initialState, action) => {
             return state;
     }
 }
+
+
+export default reducer;

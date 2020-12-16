@@ -5,6 +5,7 @@ import Classes from './Grid.module.scss';
 import ClassesMovements from './Movements.module.scss';
 
 import robotFig from '../../static/images/human.png';
+import { GAME_TYPE_OPTIONS } from '../../store/actions/gameType';
 
 /*
     PROPS
@@ -14,14 +15,14 @@ import robotFig from '../../static/images/human.png';
 */
 
 const Grid = props => {
-    
+
     const grid = props.robot.grid.rows.map(rowY => {
         return (
             <div key={rowY} className={Classes.GameRow} style={rowStyle}>
                 {props.robot.grid.columns.map(columnX => {
                     const state = { x: columnX, y: rowY };
-                    // LOGIC
 
+                    // LOGIC
                     // square classes
                     let squareClasses = [Classes.GameSquare];
                     // if is visited 
@@ -42,12 +43,17 @@ const Grid = props => {
                     if (props.robot.isRobotOnState(state)) {
                         showRobot = true;
                         robotClasses = [
-                            Classes.Robot, 
+                            Classes.Robot,
                             ClassesMovements[props.robot.state.direction],
                             Classes[props.robot.state.direction] // that's for facing direction
                         ].join(" ");
                     }
-
+                    let rewardTypeComponent;
+                    if (!showRobot && props.rewardType === GAME_TYPE_OPTIONS.qLearning) {
+                        rewardTypeComponent = props.robot.algorithm.getRewardsIfRobotAround(props.robot.state, state);
+                    } else if (!showRobot && props.rewardType === GAME_TYPE_OPTIONS.valueIteration) {
+                        rewardTypeComponent = props.robot.algorithm.getRewardOfState('', state).toFixed(2);
+                    }
                     return (
                         // printing the square
                         <div key={columnX}
@@ -63,8 +69,7 @@ const Grid = props => {
                             {/* printing rewards */}
                             { props.rewards &&
                                 <span className={Classes.Rewards}>
-                                    {props.robot.algorithm.getRewardsIfRobotAround(props.robot.state, state)}
-                                    {/* {props.robot.algorithm.rewards_mat[state.x][state.y].toFixed(2)} */}
+                                    {rewardTypeComponent}
                                 </span>
                             }
                         </div>

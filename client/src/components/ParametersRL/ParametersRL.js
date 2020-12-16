@@ -45,16 +45,16 @@ const ParametersRL = props => {
 
             <div className={Classes.ParamContainer}>
                 <input
-                    id="reward"
+                    id="finishReward"
                     type="range"
                     min="0"
                     max="10"
                     step=".1"
-                    value={parameters.reward}
+                    value={parameters.finishReward}
                     className={Classes.Slider}
-                    onChange={e => paramHandler(e, 'reward')}
+                    onChange={e => paramHandler(e, 'finishReward')}
                 />
-                <label htmlFor="reward">Reward: {parameters.reward}</label>
+                <label htmlFor="finishReward">Reward: {parameters.finishReward}</label>
             </div>
 
             <div className={Classes.ParamContainer}>
@@ -73,16 +73,16 @@ const ParametersRL = props => {
 
             <div className={Classes.ParamContainer}>
                 <input
-                    id="penalty"
+                    id="trapPenalty"
                     type="range"
                     min="-10"
                     max="0"
                     step=".1"
-                    value={parameters.penalty}
+                    value={parameters.trapPenalty}
                     className={Classes.Slider}
-                    onChange={e => paramHandler(e, 'penalty')}
+                    onChange={e => paramHandler(e, 'trapPenalty')}
                 />
-                <label htmlFor="penalty">Penalty: {parameters.penalty}</label>
+                <label htmlFor="trapPenalty">Penalty: {parameters.trapPenalty}</label>
             </div>
 
             <div className={Classes.ParamContainer}>
@@ -101,6 +101,7 @@ const ParametersRL = props => {
 
             <div className={Classes.ParamContainer}>
                 <input
+                    disabled={props.human}
                     id="e"
                     type="range"
                     min="0"
@@ -116,20 +117,21 @@ const ParametersRL = props => {
 
             <div className={Classes.ParamContainer}>
                 <input
-                    id="l"
+                    id="a"
                     type="range"
                     min="0"
                     max="1"
                     step=".01"
-                    value={parameters.l}
+                    value={parameters.a}
                     className={Classes.Slider}
-                    onChange={e => paramHandler(e, 'l')}
+                    onChange={e => paramHandler(e, 'a')}
                 />
-                <label htmlFor="l">Learning rate (l): {parameters.l}</label>
+                <label htmlFor="l">Learning rate (a): {parameters.a}</label>
             </div>
 
             <div className={Classes.ParamContainer}>
                 <input
+                    disabled={props.human}
                     id="robotTimeMs"
                     type="range"
                     min="1"
