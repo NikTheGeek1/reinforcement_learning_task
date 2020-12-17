@@ -15,7 +15,7 @@ import RobotHum from '../../models/robotHuman'; // model
 
 
 import GameValueIteration from '../../components/GameRL/GameValueIteration';
-// import GameQLearning from '../../components/GameQ/GameQ';
+import GameQLearning from '../../components/GameQ/GameQ';
 import ReportFigure from '../../components/ReportFigure/ReportFigure';
 import Console from '../../components/Console/Console';
 
@@ -41,11 +41,11 @@ const Dashboard = props => {
     switch (GAME_TYPE_OPTIONS[gameTypeState.gameType]) {
 
         case GAME_TYPE_OPTIONS.valueIteration:
-            game = <GameValueIteration 
+            game = <GameValueIteration
                 Robot={RobotComputer}
                 Algorithm={ValueIteration}
                 Grid={Grid}
-                rewardType = {GAME_TYPE_OPTIONS.valueIteration}
+                rewardType={GAME_TYPE_OPTIONS.valueIteration}
                 gridSpecs={{ rows, columns, finishingCoordinates, trapsCoordinates }}
                 onAnalysis={analysisHandler}
             />;
@@ -59,14 +59,14 @@ const Dashboard = props => {
             let algoParams = GAME_TYPE_OPTIONS.valueIteration;
             if (analyseHumanBehaviourState.algoType === GAME_TYPE_OPTIONS.valueIteration) {
                 rewardType = GAME_TYPE_OPTIONS.valueIteration;
-                parameters = <ParametersValueIterations human={true}/>;
+                parameters = <ParametersValueIterations human={true} />;
             } else if (analyseHumanBehaviourState.algoType === GAME_TYPE_OPTIONS.qLearning) {
                 AlgorithmHuman = Qlearning;
                 rewardType = GAME_TYPE_OPTIONS.qLearning;
-                parameters = <ParametersQlearning human={true}/>;
+                parameters = <ParametersQlearning human={true} />;
                 algoParams = GAME_TYPE_OPTIONS.qLearning;
             }
-            
+
             game = <GameHuman
                 parameters={algoParams}
                 Robot={RobotHuman}
@@ -78,8 +78,15 @@ const Dashboard = props => {
             />;
             break;
         case GAME_TYPE_OPTIONS.qLearning:
-            // game = <GameQLearning onAnalysis={analysisHandler}/>;
-            // parameters = <ParametersQlearning />;
+            game = <GameQLearning
+                Robot={RobotComputer}
+                Algorithm={Qlearning}
+                Grid={Grid}
+                rewardType={GAME_TYPE_OPTIONS.qLearning}
+                gridSpecs={{ rows, columns, finishingCoordinates, trapsCoordinates }}
+                onAnalysis={analysisHandler}
+            />;
+            parameters = <ParametersQlearning />;
             break;
         default:
             break;
@@ -90,7 +97,7 @@ const Dashboard = props => {
             {game}
             {parameters}
             {data && <ReportFigure data={data} />}
-            <Console 
+            <Console
                 human={GAME_TYPE_OPTIONS[gameTypeState.gameType] === GAME_TYPE_OPTIONS.human && true}
                 humanWithNoAlgo={analyseHumanBehaviourState.algoType === 'human'}
             />

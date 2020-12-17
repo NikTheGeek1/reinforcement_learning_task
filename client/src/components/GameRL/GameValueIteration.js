@@ -61,8 +61,6 @@ const GameValueIteration = props => {
             <GridComponent
                 robot={robot}
                 rewardType={props.rewardType}
-                rewards={true}
-                shadingColours={true}
             />
             <button className={Classes.Btn} onClick={restartHandler}>
                 Restart

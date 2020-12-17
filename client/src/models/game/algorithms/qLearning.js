@@ -107,7 +107,6 @@ export default class Qlearning {
     }
 
     chooseMove(moves, grid, exploreOnlyNonVisited = false) {
-
         // explore only non-visited (if there is any non-visited)
         if (exploreOnlyNonVisited && grid.grabNonVisited(moves).length) {
             if (Math.random() < this.e) {

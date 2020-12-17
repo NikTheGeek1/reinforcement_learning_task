@@ -21,10 +21,9 @@ export default class RobotComputer {
 
         // set legal moves
         // choose move
-        
+
         const move = this.algorithm.chooseMove(this._legalMoves);
         this.algorithm.penaliseVisitedInRoundStates(move);
-
         this.state = move;
         this.setLegalMoves();
 
@@ -51,9 +50,24 @@ export default class RobotComputer {
 
     setLegalMoves() {
         const legalMoves = [];
+        let getRewardOfEast;
+        let getRewardOfWest;
+        let getRewardOfSouth;
+        let getRewardOfNorth;
+        if (this.algorithm.constructor.name === 'Qlearning') {
+            getRewardOfEast = this.state;
+            getRewardOfWest = this.state;
+            getRewardOfSouth = this.state;
+            getRewardOfNorth = this.state;
+        } else if (this.algorithm.constructor.name === 'ValueIteration') {
+            getRewardOfEast = { x: this.state.x + 1, y: this.state.y };
+            getRewardOfWest = { x: this.state.x - 1, y: this.state.y };
+            getRewardOfSouth = { x: this.state.x, y: this.state.y + 1 };
+            getRewardOfNorth = { x: this.state.x, y: this.state.y - 1 };
+        }
         if (this.state.x < this.grid.columns.length - 1) {
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('east', {x: this.state.x + 1, y: this.state.y}),
+                reward: this.algorithm.getRewardOfState('east', getRewardOfEast),
                 direction: 'east',
                 x: this.state.x + 1,
                 y: this.state.y
@@ -61,7 +75,7 @@ export default class RobotComputer {
         }
         if (this.state.x > 0) { // left
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('west', {x: this.state.x - 1, y: this.state.y}),
+                reward: this.algorithm.getRewardOfState('west', getRewardOfWest),
                 direction: 'west',
                 x: this.state.x - 1,
                 y: this.state.y
@@ -69,7 +83,7 @@ export default class RobotComputer {
         }
         if (this.state.y < this.grid.rows.length - 1) {
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('south', {x: this.state.x, y: this.state.y + 1}),
+                reward: this.algorithm.getRewardOfState('south', getRewardOfSouth),
                 direction: 'south',
                 x: this.state.x,
                 y: this.state.y + 1
@@ -77,7 +91,7 @@ export default class RobotComputer {
         }
         if (this.state.y > 0) {
             legalMoves.push({
-                reward: this.algorithm.getRewardOfState('north', {x: this.state.x, y: this.state.y - 1}),
+                reward: this.algorithm.getRewardOfState('north', getRewardOfNorth),
                 direction: 'north',
                 x: this.state.x,
                 y: this.state.y - 1
