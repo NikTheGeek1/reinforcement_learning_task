@@ -54,6 +54,7 @@ export default class RobotComputer {
         let getRewardOfWest;
         let getRewardOfSouth;
         let getRewardOfNorth;
+        console.log(this.algorithm.constructor.name , 'robot.js', 'line: ', '57');
         if (this.algorithm.constructor.name === 'Qlearning') {
             getRewardOfEast = this.state;
             getRewardOfWest = this.state;
