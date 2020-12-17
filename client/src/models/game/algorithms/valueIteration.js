@@ -1,5 +1,6 @@
 export default class ValueIteration {
     constructor(rows, columns, params) {
+        this.name = 'ValueIteration';
         this.rows = rows;
         this.columns = columns;
         this.h = params.h; // history penalty parameter

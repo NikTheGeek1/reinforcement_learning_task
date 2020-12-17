@@ -1,5 +1,6 @@
 export default class Qlearning {
     constructor(rows, columns, params) {
+        this.name = 'Qlearning';
         this.rows = rows;
         this.columns = columns;
         this.h = params.h; // history penalty parameter
