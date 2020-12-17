@@ -66,8 +66,8 @@ export const rescale0to1 = (num, minNew, maxNew, minOld, maxOld) => {
 }
 
 export const rewardToColor = (reward, initialReward, finishReward, trapPenalty, startingColorNum, endingColorNum) => {
-    let squareColor = 'rgb(0, 0, 0)';
-    if (reward > initialReward) {
+    let squareColor = 'rgb(16, 16, 16)';
+    if (reward > initialReward + 0.001) {
         const greenColor = rescale0to1(
             reward,
             startingColorNum,
@@ -76,7 +76,7 @@ export const rewardToColor = (reward, initialReward, finishReward, trapPenalty, 
             finishReward
         );
         squareColor = `rgb(0, ${greenColor}, 0)`;
-    } else if (reward < initialReward) {
+    } else if (reward < initialReward - 0.001) {
         const redColor = rescale0to1(
             Math.abs(reward),
             startingColorNum,
