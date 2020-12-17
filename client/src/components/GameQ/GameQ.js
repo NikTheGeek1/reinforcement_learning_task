@@ -2,19 +2,15 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import GridComponent from '../Grid/Grid';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
 
-import Classes from './GameQ.module.scss';
-
-import Qlearning from '../../models/game/algorithms/qLearning';
-import Grid from '../../models/game/grid';
-import Robot from '../../models/game/robot';
-import { columns, rows } from '../../models/setUpGrid';
-import { finishingCoordinates, trapsCoordinates } from '../../models/setUpConditions';
+// import Classes from './GameQ.module.scss';
 import { useSelector } from 'react-redux';
+import Classes from '../GameRL/Game.module.scss';
 
 let algorithm;
 let grid;
 let robot;
 const GameQ = props => {
+
     const params = useSelector(state => state.parameters.qLearning);
     const [scoreBoard, setScoreBoard] = useState({ showPlus: false, showMinus: false, dummy: 0 });
     const [restart, setRestart] = useState(false);
