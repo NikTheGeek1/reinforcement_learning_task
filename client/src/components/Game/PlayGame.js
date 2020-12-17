@@ -14,7 +14,7 @@ const PlayGame = props => {
     const params = useSelector(state => state.parameters[props.parameters]);
     const [scoreBoard, setScoreBoard] = useState({ showPlus: false, showMinus: false, dummy: 0 });
     const [restart, setRestart] = useState(false);
-
+    
     useMemo(() => {
         algorithm = new props.Algorithm(props.gridSpecs.rows, props.gridSpecs.columns, params);
         grid = new props.Grid(props.gridSpecs.rows, props.gridSpecs.columns, props.gridSpecs.finishingCoordinates, props.gridSpecs.trapsCoordinates, params);

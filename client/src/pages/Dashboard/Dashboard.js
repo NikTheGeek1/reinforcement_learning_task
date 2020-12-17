@@ -56,11 +56,10 @@ const Dashboard = props => {
             const RobotHuman = RobotHum;
             let AlgorithmHuman = ValueIteration;
             let rewardType;
-            let algoParams;
+            let algoParams = GAME_TYPE_OPTIONS.valueIteration;
             if (analyseHumanBehaviourState.algoType === GAME_TYPE_OPTIONS.valueIteration) {
                 rewardType = GAME_TYPE_OPTIONS.valueIteration;
                 parameters = <ParametersValueIterations human={true}/>;
-                algoParams = GAME_TYPE_OPTIONS.valueIteration;
             } else if (analyseHumanBehaviourState.algoType === GAME_TYPE_OPTIONS.qLearning) {
                 AlgorithmHuman = Qlearning;
                 rewardType = GAME_TYPE_OPTIONS.qLearning;
@@ -91,7 +90,10 @@ const Dashboard = props => {
             {game}
             {parameters}
             {data && <ReportFigure data={data} />}
-            <Console human={GAME_TYPE_OPTIONS[gameTypeState.gameType] === GAME_TYPE_OPTIONS.human && true}/>
+            <Console 
+                human={GAME_TYPE_OPTIONS[gameTypeState.gameType] === GAME_TYPE_OPTIONS.human && true}
+                humanWithNoAlgo={analyseHumanBehaviourState.algoType === 'human'}
+            />
         </div>
     );
 };

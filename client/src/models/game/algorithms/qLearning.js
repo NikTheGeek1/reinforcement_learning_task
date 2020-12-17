@@ -161,13 +161,13 @@ export default class Qlearning {
 
     getRewardsIfRobotAround(robotState, squareState) {
         // the robot is on the west of the current square
-         if (robotState.x === squareState.x - 1 && robotState.y === squareState.y) return this.getRewardOfState('east', robotState).toFixed(2);
+         if (robotState.x === squareState.x - 1 && robotState.y === squareState.y) return this.getRewardOfState('east', robotState);
          // the robot is on the east of the current square
-         if (robotState.x === squareState.x + 1 && robotState.y === squareState.y) return this.getRewardOfState('west', robotState).toFixed(2); 
+         if (robotState.x === squareState.x + 1 && robotState.y === squareState.y) return this.getRewardOfState('west', robotState); 
          // robot is on the north
-         if (robotState.x === squareState.x && robotState.y === squareState.y - 1) return this.getRewardOfState('south', robotState).toFixed(2); 
+         if (robotState.x === squareState.x && robotState.y === squareState.y - 1) return this.getRewardOfState('south', robotState); 
          // robot is on the south
-         if (robotState.x === squareState.x && robotState.y === squareState.y + 1) return this.getRewardOfState('north', robotState).toFixed(2); 
+         if (robotState.x === squareState.x && robotState.y === squareState.y + 1) return this.getRewardOfState('north', robotState); 
     }
 
 }

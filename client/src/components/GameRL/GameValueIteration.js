@@ -13,7 +13,7 @@ const GameValueIteration = props => {
     const params = useSelector(state => state.parameters.valueIteration);
     const [scoreBoard, setScoreBoard] = useState({ showPlus: false, showMinus: false, dummy: 0 });
     const [restart, setRestart] = useState(false);
-
+    
     useMemo(() => {
         algorithm = new props.Algorithm(props.gridSpecs.rows, props.gridSpecs.columns, params);
         grid = new props.Grid(props.gridSpecs.rows, props.gridSpecs.columns, props.gridSpecs.finishingCoordinates, props.gridSpecs.trapsCoordinates, params);
@@ -60,8 +60,9 @@ const GameValueIteration = props => {
             />
             <GridComponent
                 robot={robot}
-                rewards={true}
                 rewardType={props.rewardType}
+                rewards={true}
+                shadingColours={true}
             />
             <button className={Classes.Btn} onClick={restartHandler}>
                 Restart

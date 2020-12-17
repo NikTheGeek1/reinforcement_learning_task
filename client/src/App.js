@@ -7,11 +7,13 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import GameTypeReducer from './store/reducers/gameType';
 import parametersReducer from './store/reducers/parameters';
 import behaviourAlgoReducer from './store/reducers/analyseHumanBehaviour';
+import rewardsColouringReducer from './store/reducers/rewardsColouring';
 
 const rootReducer = combineReducers({
   gameType: GameTypeReducer,
   parameters: parametersReducer,
-  behaviourAlgo: behaviourAlgoReducer
+  behaviourAlgo: behaviourAlgoReducer,
+  rewardsColouring: rewardsColouringReducer
 });
 
 const store = createStore(rootReducer);
