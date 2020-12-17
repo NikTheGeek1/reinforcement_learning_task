@@ -89,8 +89,8 @@ const ParametersRL = props => {
                 <input
                     id="h"
                     type="range"
-                    min="0"
-                    max="10"
+                    min="-10"
+                    max="0"
                     step=".1"
                     value={parameters.h}
                     className={Classes.Slider}
