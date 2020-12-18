@@ -95,7 +95,7 @@ export default class RobotComputer {
             {
                 reward: this.algorithm.getRewardOfState('current', { x: this.initialState.x, y: this.initialState.y }),
                 direction: this.initialDirection,
-                ...this.initialState,
+                ...this.state,
                 alternatives: null
             });
     }

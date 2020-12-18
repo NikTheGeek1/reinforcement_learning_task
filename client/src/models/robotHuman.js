@@ -137,7 +137,7 @@ export default class Robot {
         // calculate rewards
         this.pushToHistory(
             {
-                reward: this.algorithm.rewards_mat[this.state.x][this.state.y],
+                reward: this.algorithm.getRewardOfState('current', { x: this.initialState.x, y: this.initialState.y }),
                 direction: this.initialDirection,
                 ...this.state,
                 alternatives: null
