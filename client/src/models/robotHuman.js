@@ -2,15 +2,15 @@ export default class Robot {
     constructor(algorithm, grid, state, params, initialDirection = 'east') {
         this.algorithm = algorithm;
         this.grid = grid;
-        this.initialState = { ...state };
-        this.state = state;
+        this.initialState = this.algorithm.goToInitialState(state, this.grid);
+        this.state = { ...this.initialState };
         // robot parameters
         this.steps = params.steps;
         this.score = params.score;
         //
         this._legalMoves = [];
         this.initialDirection = initialDirection;
-        this.history = [[{ reward: algorithm.initialReward, direction: this.initialDirection, ...state, alternatives: null }]];
+        this.history = [[{ reward: algorithm.initialReward, direction: this.initialDirection, ...this.state, alternatives: null }]];
         this.t = 0;
         this.setLegalMoves();
         this.algorithm.penaliseVisitedInRoundStates(this.state, this.grid);
@@ -24,11 +24,9 @@ export default class Robot {
         return this._legalMoves.filter(mv => mv.direction === move).length !== 0;
     }
 
-    getMove(move) {
-        return this._legalMoves.filter(mv => mv.direction === move)[0];
+    getMove(direction) {
+        return this._legalMoves.filter(mv => mv.direction === direction)[0];
     }
-
-    
 
 
     setLegalMoves() {
@@ -113,7 +111,6 @@ export default class Robot {
         this.algorithm.penaliseVisitedInRoundStates(move);
 
         // set legal moves
-        
         this.state = move;
         this.setLegalMoves();
        
@@ -133,16 +130,16 @@ export default class Robot {
     }
 
     goToStart() {
-        this.state = this.initialState;
+        this.state = this.algorithm.goToInitialState(this.initialState, this.grid);
         this.algorithm.penaliseVisitedInRoundStates(this.state, this.grid);
         this.setLegalMoves();
         this.increaseRound();
         // calculate rewards
         this.pushToHistory(
             {
-                reward: this.algorithm.rewards_mat[this.initialState.x][this.initialState.y],
+                reward: this.algorithm.rewards_mat[this.state.x][this.state.y],
                 direction: this.initialDirection,
-                ...this.initialState,
+                ...this.state,
                 alternatives: null
             });
     }

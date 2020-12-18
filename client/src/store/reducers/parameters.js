@@ -4,7 +4,7 @@ const initialState = {
     valueIteration: {
         score: 100,
         steps: 100,
-        h: -.5,
+        h: -.1,
         a: .2,
         e: .1,
         robotTimeMs: 200,
@@ -15,14 +15,26 @@ const initialState = {
     qLearning: {
         score: 100,
         steps: 100,
-        h: -.5,
+        h: -.1,
         a: .2,
         e: .1,
         robotTimeMs: 200,
         finishReward: 1,
         trapPenalty: -1,
         initialReward: 0,
-        gamma: .9
+        gamma: .6
+    },
+    monteCarlo: {
+        score: 100,
+        steps: 100,
+        h: -.1,
+        a: .2,
+        e: .1,
+        robotTimeMs: 200,
+        finishReward: 1,
+        trapPenalty: -1,
+        initialReward: 0,
+        gamma: .6
     }
 };
 

@@ -1,7 +1,7 @@
 import { CHANGE_ALGO_BEHAVIOUR } from '../actions/analyseHumanBehaviour';
 
 const initialState = {
-    algoType: 'qLearning',
+    algoType: 'monteCarlo',
 };
 
 const reducer = (state = initialState, action) => {

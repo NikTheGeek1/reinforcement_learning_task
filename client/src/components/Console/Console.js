@@ -40,6 +40,7 @@ const Console = props => {
                     <option value="valueIteration">Value iteration</option>
                     <option value="human">Play the game</option>
                     <option value="qLearning">Q-Learning</option>
+                    <option value="monteCarlo">Monte-Carlo</option>
                 </select>
             </div>
             {!props.humanWithNoAlgo && <>
@@ -59,6 +60,7 @@ const Console = props => {
                     <select defaultValue={analyseHumanBehaviourState.algoType} ref={selectAlgo} name="algoType" id="algoType" onChange={selectAlgoGameTypeHandler}>
                         <option value="valueIteration">Value iteration</option>
                         <option value="qLearning">Q-Learning</option>
+                        <option value="monteCarlo">Monte-Carlo</option>
                         <option value="human">None</option>
                     </select>
                 </div>

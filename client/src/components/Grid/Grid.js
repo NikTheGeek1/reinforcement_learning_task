@@ -53,7 +53,9 @@ const Grid = props => {
                     if (!showRobot && props.rewardType === GAME_TYPE_OPTIONS.qLearning) {
                         rewardTypeComponent = props.robot.algorithm.getRewardsIfRobotAround(props.robot.state, state);
                     } else if (!showRobot && props.rewardType === GAME_TYPE_OPTIONS.valueIteration) {
-                        rewardTypeComponent = props.robot.algorithm.getRewardOfState('', state);
+                        rewardTypeComponent = props.robot.algorithm.getRewardOfState('current', state);
+                    } else if (!showRobot && props.rewardType === GAME_TYPE_OPTIONS.monteCarlo) {
+                        rewardTypeComponent = props.robot.algorithm.getRewardOfState('current', state);
                     }
                     let newSquareStyle = squareStyle;
                     if (rewardsColouring.showColourShadowing) {

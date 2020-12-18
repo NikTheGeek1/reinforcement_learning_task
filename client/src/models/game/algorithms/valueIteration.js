@@ -14,6 +14,11 @@ export default class ValueIteration {
 
     }
 
+    goToInitialState(initState) {
+        return initState;
+    }
+
+
     pushToHistory(rewardsMat) {
         this.rewardsHistory.push(this.deepCopy(rewardsMat));
     }
@@ -116,8 +121,12 @@ export default class ValueIteration {
         return history;
     }
 
-    getRewardOfState(dummy, state) {
-        return this.rewards_mat[state.x][state.y];
+    getRewardOfState(direction, state) {
+        if (direction === 'east') return this.rewards_mat[state.x + 1][state.y];
+        if (direction === 'west') return this.rewards_mat[state.x - 1][state.y];
+        if (direction === 'north') return this.rewards_mat[state.x][state.y - 1];
+        if (direction === 'south') return this.rewards_mat[state.x][state.y + 1];
+        if (direction === 'current') return this.rewards_mat[state.x][state.y];
     }
 
 }

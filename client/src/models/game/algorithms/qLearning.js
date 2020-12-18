@@ -15,6 +15,10 @@ export default class Qlearning {
 
     }
 
+    goToInitialState(initState) {
+        return initState;
+    }
+
     pushToHistory(rewardsMat) {
         this.rewardsHistory.push(this.deepCopy(rewardsMat));
     }
@@ -55,10 +59,10 @@ export default class Qlearning {
     }
 
     exploit(moves) {
-        
+
         let maxRewardIdx = 0;
         let higherReward = moves[maxRewardIdx].reward;
-        
+
         for (let idx = 0; idx < moves.length; idx++) {
             if (moves[idx].reward > higherReward) {
                 higherReward = moves[idx].reward;
@@ -88,7 +92,7 @@ export default class Qlearning {
 
     restoreRewardsOfVisitedStates(history) {
         this.h && history.forEach(state => {
-                this.updateSelfFromAllDirections(state, -this.h);
+            this.updateSelfFromAllDirections(state, -this.h);
         });
     }
 
@@ -146,11 +150,11 @@ export default class Qlearning {
         history.reverse();
         // push to grid history
         this.pushToHistory(this.rewards_mat);
-        
+
         return history;
     }
 
-    
+
 
     getRewardOfState(direction, state) {
         if (direction === 'east') return this.rewards_mat[state.x][state.y].east.reward;
@@ -161,13 +165,13 @@ export default class Qlearning {
 
     getRewardsIfRobotAround(robotState, squareState) {
         // the robot is on the west of the current square
-         if (robotState.x === squareState.x - 1 && robotState.y === squareState.y) return this.getRewardOfState('east', robotState);
-         // the robot is on the east of the current square
-         if (robotState.x === squareState.x + 1 && robotState.y === squareState.y) return this.getRewardOfState('west', robotState); 
-         // robot is on the north
-         if (robotState.x === squareState.x && robotState.y === squareState.y - 1) return this.getRewardOfState('south', robotState); 
-         // robot is on the south
-         if (robotState.x === squareState.x && robotState.y === squareState.y + 1) return this.getRewardOfState('north', robotState); 
+        if (robotState.x === squareState.x - 1 && robotState.y === squareState.y) return this.getRewardOfState('east', robotState);
+        // the robot is on the east of the current square
+        if (robotState.x === squareState.x + 1 && robotState.y === squareState.y) return this.getRewardOfState('west', robotState);
+        // robot is on the north
+        if (robotState.x === squareState.x && robotState.y === squareState.y - 1) return this.getRewardOfState('south', robotState);
+        // robot is on the south
+        if (robotState.x === squareState.x && robotState.y === squareState.y + 1) return this.getRewardOfState('north', robotState);
     }
 
 }

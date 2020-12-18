@@ -1,7 +1,7 @@
 import { CHANGE_TYPE } from '../actions/gameType';
 
 const initialState = {
-    gameType: 'valueIteration'
+    gameType: 'human'
 };
 
 const reducer = (state = initialState, action) => {

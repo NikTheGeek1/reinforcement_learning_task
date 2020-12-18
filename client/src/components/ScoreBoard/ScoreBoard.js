@@ -42,12 +42,16 @@ const ScoreBoard = props => {
             <h3>Score Board</h3>
             <hr />
             <div className={Classes.StepsDiv}>
+                <p className={Classes.SubText}>Round: {props.round + 1} </p>
+            </div>
+            <div className={Classes.StepsDiv}>
                 <p className={Classes.SubText}>Steps: {props.steps} </p>
             </div>
             <div className={Classes.ScoreDiv}>
                 <p className={Classes.SubText}>Score: {props.score}
                     {plusScore} {minusScore}</p>
             </div>
+            <hr />
         </div>
     );
 };

@@ -3,10 +3,14 @@ import { useSelector } from 'react-redux';
 
 // universal stuff
 import Grid from '../../models/game/grid';
+
+// Algorithms
 import Qlearning from '../../models/game/algorithms/qLearning';
 import ValueIteration from '../../models/game/algorithms/valueIteration';
+import MonteCarlo from '../../models/game/algorithms/monteCarlo';
 
 // computer stuff
+import GameComputer from '../../components/Game/GameComputer';
 import RobotComputer from '../../models/game/robot';
 
 // human stuff
@@ -14,13 +18,14 @@ import GameHuman from '../../components/Game/PlayGame'; // component
 import RobotHum from '../../models/robotHuman'; // model
 
 
-import GameValueIteration from '../../components/GameRL/GameValueIteration';
-import GameQLearning from '../../components/GameQ/GameQ';
 import ReportFigure from '../../components/ReportFigure/ReportFigure';
 import Console from '../../components/Console/Console';
 
+// parameters
 import ParametersQlearning from '../../components/GameQ/ParametersQ';
 import ParametersValueIterations from '../../components/ParametersRL/ParametersRL';
+import ParametersMonteCarlo from '../../components/GameMC/ParametersMonteCarlo';
+
 import { GAME_TYPE_OPTIONS } from '../../store/actions/gameType';
 
 
@@ -41,7 +46,8 @@ const Dashboard = props => {
     switch (GAME_TYPE_OPTIONS[gameTypeState.gameType]) {
 
         case GAME_TYPE_OPTIONS.valueIteration:
-            game = <GameValueIteration
+            game = <GameComputer
+                parameters={GAME_TYPE_OPTIONS.valueIteration}
                 Robot={RobotComputer}
                 Algorithm={ValueIteration}
                 Grid={Grid}
@@ -65,6 +71,11 @@ const Dashboard = props => {
                 rewardType = GAME_TYPE_OPTIONS.qLearning;
                 parameters = <ParametersQlearning human={true} />;
                 algoParams = GAME_TYPE_OPTIONS.qLearning;
+            } else if (analyseHumanBehaviourState.algoType === GAME_TYPE_OPTIONS.monteCarlo) {
+                AlgorithmHuman = MonteCarlo;
+                rewardType = GAME_TYPE_OPTIONS.monteCarlo;
+                parameters = <ParametersMonteCarlo human={true} />;
+                algoParams = GAME_TYPE_OPTIONS.monteCarlo;
             }
 
             game = <GameHuman
@@ -78,7 +89,8 @@ const Dashboard = props => {
             />;
             break;
         case GAME_TYPE_OPTIONS.qLearning:
-            game = <GameQLearning
+            game = <GameComputer
+                parameters={GAME_TYPE_OPTIONS.qLearning}
                 Robot={RobotComputer}
                 Algorithm={Qlearning}
                 Grid={Grid}
@@ -87,6 +99,18 @@ const Dashboard = props => {
                 onAnalysis={analysisHandler}
             />;
             parameters = <ParametersQlearning />;
+            break;
+        case GAME_TYPE_OPTIONS.monteCarlo:
+            game = <GameComputer
+                parameters={GAME_TYPE_OPTIONS.monteCarlo}
+                Robot={RobotComputer}
+                Algorithm={MonteCarlo}
+                Grid={Grid}
+                rewardType={GAME_TYPE_OPTIONS.monteCarlo}
+                gridSpecs={{ rows, columns, finishingCoordinates, trapsCoordinates }}
+                onAnalysis={analysisHandler}
+            />;
+            parameters = <ParametersMonteCarlo />;
             break;
         default:
             break;

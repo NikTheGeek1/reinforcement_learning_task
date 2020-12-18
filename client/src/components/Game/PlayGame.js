@@ -70,6 +70,7 @@ const PlayGame = props => {
                 trapPenalty={robot.grid.trapPenalty}
                 steps={robot.steps}
                 score={robot.score}
+                round={robot.t}
             />
             <GridComponent
                 robot={robot}

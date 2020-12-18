@@ -1,20 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import GridComponent from '../Grid/Grid';
-import ScoreBoard from '../ScoreBoard/ScoreBoard';
 
-// import Classes from './GameQ.module.scss';
+import Classes from './Game.module.scss';
 import { useSelector } from 'react-redux';
-import Classes from '../GameRL/Game.module.scss';
+import ScoreBoard from '../ScoreBoard/ScoreBoard';
+import GridComponent from '../Grid/Grid';
 
 let algorithm;
 let grid;
 let robot;
-const GameQ = props => {
-
-    const params = useSelector(state => state.parameters.qLearning);
+const GameValueIteration = props => {
+    const params = useSelector(state => state.parameters[props.parameters]);
     const [scoreBoard, setScoreBoard] = useState({ showPlus: false, showMinus: false, dummy: 0 });
     const [restart, setRestart] = useState(false);
-
+    
     useMemo(() => {
         algorithm = new props.Algorithm(props.gridSpecs.rows, props.gridSpecs.columns, params);
         grid = new props.Grid(props.gridSpecs.rows, props.gridSpecs.columns, props.gridSpecs.finishingCoordinates, props.gridSpecs.trapsCoordinates, params);
@@ -49,7 +47,6 @@ const GameQ = props => {
         });
     };
 
-
     return (
         <div className={Classes.OuterContainer}>
             <ScoreBoard
@@ -59,6 +56,7 @@ const GameQ = props => {
                 trapPenalty={robot.grid.trapPenalty}
                 steps={robot.steps}
                 score={robot.score}
+                round={robot.t}
             />
             <GridComponent
                 robot={robot}
@@ -74,4 +72,4 @@ const GameQ = props => {
     );
 };
 
-export default GameQ;
+export default GameValueIteration;
