@@ -29,6 +29,7 @@ const PlayGame = props => {
     };
 
     const makeMovement = e => {
+        e.preventDefault();
         if (e.keyCode === 37) {// left
             trapOrFinish(robot.moveWest());
         } else if (e.keyCode === 38) {// up
