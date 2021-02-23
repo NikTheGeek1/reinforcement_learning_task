@@ -1,7 +1,7 @@
 import { CHANGE_ALGO_BEHAVIOUR } from '../actions/analyseHumanBehaviour';
 
 const initialState = {
-    algoType: 'monteCarlo',
+    algoType: 'valueIteration',
 };
 
 const reducer = (state = initialState, action) => {
