@@ -80,9 +80,9 @@ const PlayGame = props => {
             <button className={Classes.Btn} onClick={restartHandler}>
                 Restart
                 </button>
-            <button className={Classes.Btn} onClick={analysisHandler}>
+            {/* <button className={Classes.Btn} onClick={analysisHandler}>
                 Analyse
-            </button>
+            </button> */}
         </div>
 
     );
